@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR" data-screen-label="SBK Site">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SBK · Legal Operations</title>
+<link rel="stylesheet" href="styles/sbk-tokens.css"/>
+<link rel="stylesheet" href="styles/site.css"/>
+<style>
+  /* tweak overrides hooks */
+  .tweak-hero-size { font-size: var(--tweak-hero-size, clamp(48px, 7.2vw, 104px)) !important; }
+  .tweak-hero-bg  { background: var(--tweak-hero-bg, #012824) !important; }
+  .tweak-hero-accent { color: var(--tweak-hero-accent, #5C9094) !important; }
+  .sbk-grid-pattern { opacity: var(--tweak-grid-opacity, 0.06) !important; }
+  .sec-pad-lg { padding-top: var(--tweak-section-pad-lg, 128px) !important; padding-bottom: var(--tweak-section-pad-lg, 128px) !important; }
+  body.no-italic .h-italic { font-style: normal !important; }
+  /* tweak hero alignment */
+  .hero-align { text-align: var(--tweak-hero-align, left); }
+  .hero-align .h-display, .hero-align p, .hero-align > div:not(.sbk-grid-pattern):not([aria-hidden]) {
+    /* alignment applied via class only on hero block */
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/animations.jsx"></script>
+<script type="text/babel" src="src/router.jsx"></script>
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/RadialMap.jsx"></script>
+<script type="text/babel" src="src/chrome.jsx"></script>
+<script type="text/babel" src="src/pages/Home.jsx"></script>
+<script type="text/babel" src="src/pages/Ecossistema.jsx"></script>
+<script type="text/babel" src="src/pages/Produto.jsx"></script>
+<script type="text/babel" src="src/pages/SBKIA.jsx"></script>
+<script type="text/babel" src="src/pages/Sobre.jsx"></script>
+<script type="text/babel" src="src/pages/Resto.jsx"></script>
+<script type="text/babel" src="src/Tweaks.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  const route = useHashRoute();
+
+  // Determine page and screen label
+  let page, label, headerTone = 'dark';
+  if (route === '/' || route === '') {
+    page = <HomePage/>;
+    label = '00 Home';
+  } else if (route === '/ecossistema') {
+    page = <EcossistemaPage/>;
+    label = '01 Ecossistema';
+  } else if (route.startsWith('/produto/')) {
+    const slug = route.split('/')[2];
+    page = <ProdutoPage slug={slug}/>;
+    label = '02 Produto · ' + slug;
+  } else if (route === '/sbk-ia') {
+    page = <SBKIAPage/>;
+    label = '03 SBK IA';
+  } else if (route === '/sobre') {
+    page = <SobrePage/>;
+    label = '04 Sobre';
+  } else if (route === '/resultados') {
+    page = <ResultadosPage/>;
+    label = '05 Resultados';
+  } else if (route === '/contato') {
+    page = <ContatoPage/>;
+    label = '06 Contato';
+  } else {
+    page = <HomePage/>;
+    label = '00 Home';
+  }
+
+  React.useEffect(() => {
+    document.title = 'SBK · ' + label.replace(/^\d+\s/, '');
+    const root = document.querySelector('[data-screen-label]');
+    if (root) root.setAttribute('data-screen-label', label);
+  }, [label]);
+
+  return (
+    <>
+      <SBKHeader tone={headerTone}/>
+      <main>{page}</main>
+      <SBKFooter/>
+      <SBKTweaks/>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
