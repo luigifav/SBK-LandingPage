@@ -180,16 +180,16 @@ function ResultadosPage() {
   const cases = [
     { tag: 'Banco · Top 5', title: '70% de redução no tempo entre processo e início da defesa',
       ctx: 'Banco com 80M de clientes ativos e operação jurídica em 27 estados.',
-      body: 'Implantamos pré-captura inteligente em todos os TJs cobertos. Antes da citação chegar, o processo já estava cadastrado, monitorado e roteado.',
+      body: 'Implantamos pré-captura inteligente em todos os tribunais cobertos. Antes da citação chegar, o processo já estava cadastrado, monitorado e roteado.',
       m: [['70%', 'redução no time-to-defense'], ['6 dias', 'antecipação média'], ['12 estados', 'na primeira onda']] },
     { tag: 'Financeira · Crédito', title: 'SLA de 30 minutos em ofícios com volume 4× maior',
       ctx: 'Volume médio de 4.200 ofícios/mês com prazos legais de 24h.',
       body: 'Substituímos a operação manual de 14 pessoas pela combinação SBK + módulo de Ofícios + Subsídios automatizados.',
       m: [['30 min', 'SLA contratual'], ['100%', 'aderência ao prazo'], ['4×', 'crescimento absorvido']] },
-    { tag: 'Seguradora', title: '99% de cobertura em monitoramento, migração em 90 dias',
+    { tag: 'Seguradora', title: '100% de cobertura em monitoramento, migração em 90 dias',
       ctx: 'Migração do sistema legado proprietário para o ecossistema SBK.',
       body: 'Plano de migração faseado por linha de produto. Monitoramento, Cadastro e Captura ativos em 90 dias sem perda de prazo no período de transição.',
-      m: [['99%', 'tribunais cobertos'], ['90 dias', 'migração completa'], ['0', 'prazos perdidos']] },
+      m: [['100%', 'tribunais cobertos'], ['90 dias', 'migração completa'], ['0', 'prazos perdidos']] },
   ];
   return (
     <PageTransition>
@@ -228,7 +228,7 @@ function ResultadosPage() {
                   {[
                     { v: '70%', l: 'redução no tempo de captura', tag: 'Banco Top 5' },
                     { v: '30min', l: 'SLA para resposta de ofícios', tag: 'Financeira' },
-                    { v: '99%', l: 'tribunais monitorados', tag: 'Seguradora' },
+                    { v: '100%', l: 'tribunais monitorados', tag: 'Seguradora' },
                     { v: '0', l: 'prazos perdidos na migração', tag: '90 dias' },
                   ].map((m, i) => (
                     <div key={i} style={{
