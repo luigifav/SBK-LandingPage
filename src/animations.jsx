@@ -29,6 +29,14 @@ function useCountUp(end, duration, active) {
     if (!active) return;
     // parse the raw number and suffix from strings like "150K+", "99%", "30"
     const str = String(end);
+    // Animate only when the value is a clean "NUMBER + suffix" pattern.
+    // Strings like "Todos os tribunais", "24/7", "R$ 0", "<2 min", "1.4 bi"
+    // render as-is — the format itself is the meaning.
+    const isAnimatable = /^\d[\d.,]*[^\d.,]*$/.test(str);
+    if (!isAnimatable) {
+      setDisplay(str);
+      return;
+    }
     const suffix = str.replace(/[\d.,]/g, '');
     const raw = parseFloat(str.replace(/[^\d.]/g, '')) || 0;
     let start = null;

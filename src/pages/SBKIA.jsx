@@ -3,7 +3,7 @@
 function SBKIAPage() {
   const products = [
     { name: 'Captura IA', desc: 'Pré-captura de processos por CNPJ. Você cadastra, a IA monitora.', price: 'a partir de R$ 0,40/CNPJ' },
-    { name: 'Monitoramento IA', desc: 'Acompanhe movimentações em 99% dos tribunais. Alertas em tempo real.', price: 'a partir de R$ 1,20/processo' },
+    { name: 'Monitoramento IA', desc: 'Acompanhe movimentações em todos os tribunais do Brasil. Alertas em tempo real.', price: 'a partir de R$ 1,20/processo' },
     { name: 'Firmas e Poderes IA', desc: 'Validação automática de vigência societária e poderes.', price: 'a partir de R$ 5,40/consulta' },
     { name: 'Laudo IA', desc: 'Geração automática de laudos técnicos a partir do processo.', price: 'a partir de R$ 18,00/laudo' },
   ];

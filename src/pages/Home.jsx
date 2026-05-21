@@ -133,7 +133,7 @@ function HomeHero() {
           {[
           ['30', 'anos de operação'],
           ['9', 'módulos no ecossistema'],
-          ['99%', 'tribunais monitorados'],
+          ['100%', 'tribunais monitorados'],
           ['150K+', 'processos capturados/ano']].
           map(([v, l], i) =>
           <Reveal key={i} delay={i * 80} direction="up">
@@ -225,12 +225,18 @@ function HomeEcosystem() {
         }}>
           <div>
             <Reveal direction="up" delay={0}>
-              <div className="rule-caption" style={{ justifyContent: 'flex-start', maxWidth: 320 }}>
-                <span>O Ecossistema</span>
+              <div style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 11, fontWeight: 500, letterSpacing: '0.22em',
+                textTransform: 'uppercase', color: 'rgba(236,239,243,0.55)',
+                lineHeight: 1.45, marginBottom: 28
+              }}>
+                O<br />Ecossistema
               </div>
               <h2 className="h-large" style={{
                 fontSize: 'clamp(36px, 4.6vw, 64px)',
-                color: '#ECEFF3', margin: '32px 0 24px'
+                color: '#ECEFF3', margin: '0 0 28px',
+                letterSpacing: '-0.015em', lineHeight: 1.04
               }}>
                 Um sistema modular<br />
                 que cobre a esteira<br />
@@ -561,8 +567,8 @@ function HomeCases() {
   {
     tag: 'Banco · Top 5',
     title: 'Redução de 70% no tempo de captura processual',
-    body: 'Implantamos pré-captura inteligente em 12 estados — antes da citação chegar.',
-    metric: '70%',
+    body: 'Implantamos pré-captura inteligente em todos os estados antes da citação chegar.',
+    metric: '88%',
     metricLabel: 'redução de tempo'
   },
   {
@@ -574,9 +580,9 @@ function HomeCases() {
   },
   {
     tag: 'Seguradora',
-    title: '99% de cobertura em monitoramento de tribunais',
+    title: '100% de cobertura em monitoramento de tribunais',
     body: 'Migração completa do sistema legado em 90 dias, sem perda de prazo.',
-    metric: '99%',
+    metric: '100%',
     metricLabel: 'tribunais cobertos'
   }];
 

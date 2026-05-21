@@ -172,11 +172,11 @@ function Footer() {
   const cols = [
     { title: 'Ecossistema', items: [
       { label: 'Captura', to: '/produto/captura' },
-      { label: 'Cadastro', to: '/ecossistema' },
-      { label: 'Monitoramento', to: '/ecossistema' },
-      { label: 'Pré-judicial', to: '/ecossistema' },
-      { label: 'Ofícios', to: '/ecossistema' },
-      { label: 'Subsídios e Laudos', to: '/ecossistema' },
+      { label: 'Cadastro', to: '/produto/cadastro' },
+      { label: 'Monitoramento', to: '/produto/monitoramento' },
+      { label: 'Pré-judicial', to: '/produto/pre-judicial' },
+      { label: 'Ofícios', to: '/produto/oficios' },
+      { label: 'Subsídios e Laudos', to: '/produto/subsidios' },
       { label: 'Analytics', to: '/ecossistema' },
     ]},
     { title: 'SBK IA', items: [

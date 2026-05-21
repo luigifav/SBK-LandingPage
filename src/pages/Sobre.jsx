@@ -6,7 +6,7 @@ function SobrePage() {
     { y: '2003', t: 'Primeiro grande banco', d: 'Início da operação com um dos cinco maiores bancos do país.' },
     { y: '2010', t: 'Cobertura nacional', d: 'Expansão da operação para 27 estados, cobrindo todos os TJs do Brasil.' },
     { y: '2015', t: 'Plataforma proprietária', d: 'Lançamento da primeira versão da esteira tecnológica que opera o ecossistema atual.' },
-    { y: '2020', t: 'Captura 2.0 + MCP', d: 'Integração nativa via Model Context Protocol aos tribunais e DJEs.' },
+    { y: '2020', t: 'Captura 2.0', d: 'Nova geração de robôs proprietários — varredura diária de todos os tribunais e DJEs do país.' },
     { y: '2024', t: 'Lançamento da SBK IA', d: 'A inteligência operacional vira produto de autosserviço para o mercado mid-market.' },
     { y: '2026', t: '30 anos', d: 'Mais de 1,4 bilhão de movimentações no histórico. O ecossistema cobre a esteira completa.' },
   ];
