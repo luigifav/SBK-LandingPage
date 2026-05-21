@@ -1,6 +1,7 @@
 /* global React, Link, Reveal, StaggerReveal, CountUp, PageTransition */
 
 function SBKIAPage() {
+  // REVISAR: confirmar tabela de preços com o time comercial antes de publicar; valores abaixo são referência inicial
   const products = [
     { name: 'Captura IA', desc: 'Pré-captura de processos por CNPJ. Você cadastra, a IA monitora.', price: 'a partir de R$ 0,40/CNPJ' },
     { name: 'Monitoramento IA', desc: 'Acompanhe movimentações em todos os tribunais do Brasil. Alertas em tempo real.', price: 'a partir de R$ 1,20/processo' },
