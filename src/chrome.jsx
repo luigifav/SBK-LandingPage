@@ -191,10 +191,11 @@ function Footer() {
     { label: 'Contato', to: '/contato' }]
   },
   { title: 'Legal', items: [
-    { label: 'LGPD · ISO 27001', to: '/' },
-    { label: 'Termos de uso', to: '/' },
-    { label: 'Privacidade', to: '/' },
-    { label: 'Canal de ética', to: '/' }]
+    { label: 'LGPD · ISO 27001', href: 'https://www.sbk.com.br/wp-content/uploads/2025/07/M08840-SBK-BPO-SERVICOS-TECNOLOGICOS-E-REPRESENTACOES-COMERCIAIS-LTDA-109458-27967-ISO27001.pdf' },
+    { label: 'Termos de uso', to: '/termos' },
+    { label: 'Privacidade', to: '/privacidade' },
+    { label: 'Política de cookies', to: '/cookies' },
+    { label: 'Canal de ética', href: 'https://docs.google.com/forms/d/e/1FAIpQLSf1vRp4Q5J8gSwXqs5sFXCpHoWW9-8vISlDl5erMjKaygPeAA/viewform?usp=send_form' }]
   }];
 
   return (
@@ -227,11 +228,93 @@ function Footer() {
               fontSize: 11, fontWeight: 600, letterSpacing: '0.14em',
               textTransform: 'uppercase', color: '#8FA5A1'
             }}>
-              <span style={{
-                width: 6, height: 6, borderRadius: '50%',
-                background: '#5C9094', boxShadow: '0 0 12px #5C9094'
-              }} />
+              <span style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 10, height: 10 }}>
+                <span style={{
+                  position: 'absolute',
+                  width: 10, height: 10, borderRadius: '50%',
+                  background: 'rgba(92,144,148,0.4)',
+                  animation: 'sbk-ping 1.8s cubic-bezier(0,0,0.2,1) infinite',
+                }} />
+                <span style={{
+                  position: 'relative',
+                  width: 6, height: 6, borderRadius: '50%',
+                  background: '#5C9094', boxShadow: '0 0 8px #5C9094',
+                  flexShrink: 0,
+                }} />
+              </span>
               30 anos de operação
+              <style>{`
+                @keyframes sbk-ping {
+                  0%   { transform: scale(1);   opacity: 0.7; }
+                  70%  { transform: scale(2.2); opacity: 0; }
+                  100% { transform: scale(2.2); opacity: 0; }
+                }
+              `}</style>
+            </div>
+
+            {/* Social icons */}
+            <div style={{ display: 'flex', gap: 10, marginTop: 28 }}>
+              {[
+                {
+                  href: 'https://www.linkedin.com/company/sbkbs/',
+                  label: 'LinkedIn',
+                  svg: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                      <rect x="2" y="9" width="4" height="12"/>
+                      <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                  ),
+                },
+                {
+                  href: 'https://www.instagram.com/sbkbs_/',
+                  label: 'Instagram',
+                  svg: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  ),
+                },
+                {
+                  href: 'https://www.tiktok.com/@sbktecnologia',
+                  label: 'TikTok',
+                  svg: (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                    </svg>
+                  ),
+                },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 38, height: 38, borderRadius: 10,
+                    border: '1px solid rgba(236,239,243,0.14)',
+                    color: '#8FA5A1',
+                    textDecoration: 'none',
+                    transition: 'border-color 180ms, color 180ms, background 180ms',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(92,144,148,0.5)';
+                    e.currentTarget.style.color = '#ECEFF3';
+                    e.currentTarget.style.background = 'rgba(92,144,148,0.10)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(236,239,243,0.14)';
+                    e.currentTarget.style.color = '#8FA5A1';
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  {s.svg}
+                </a>
+              ))}
             </div>
           </div>
           {cols.map((col) =>
@@ -245,13 +328,25 @@ function Footer() {
             }}>
                 {col.items.map((i) =>
               <li key={i.label}>
-                    <Link to={i.to} style={{
-                  fontSize: 13, fontWeight: 300, color: '#8FA5A1',
-                  transition: 'color 200ms', cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ECEFF3'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#8FA5A1'}>
-                  {i.label}</Link>
+                    {i.href ? (
+                  <a href={i.href} target="_blank" rel="noopener noreferrer" style={{
+                    fontSize: 13, fontWeight: 300, color: '#8FA5A1',
+                    transition: 'color 200ms', cursor: 'pointer', textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#ECEFF3'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#8FA5A1'}>
+                    {i.label}
+                  </a>
+                ) : (
+                  <Link to={i.to} style={{
+                    fontSize: 13, fontWeight: 300, color: '#8FA5A1',
+                    transition: 'color 200ms', cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#ECEFF3'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#8FA5A1'}>
+                    {i.label}
+                  </Link>
+                )}
                   </li>
               )}
               </ul>

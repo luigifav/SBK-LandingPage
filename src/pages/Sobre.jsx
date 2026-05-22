@@ -7,6 +7,7 @@ const SOBRE_PHOTOS = [
   { src: 'assets/photos/evento-booth.jpg',     alt: 'Demo da plataforma no stand SBK',            caption: 'Demo com potenciais clientes' },
   { src: 'assets/photos/travessia-equipe.jpg', alt: 'Evento Travessia — equipe SBK',              caption: 'Evento Travessia' },
   { src: 'assets/photos/evento-flyer.jpg',     alt: 'Material Lum.IA no Congresso',               caption: 'Lançamento Lum.IA' },
+  { src: 'assets/photos/stand-lumia.jpg',        alt: 'Stand Lum.IA no congresso',                 caption: 'Stand Lum.IA · Congresso 2024' },
   { src: 'assets/photos/congresso-robot.jpg',    alt: 'Robô Lum.IA no Congresso',                  caption: 'Lum.IA no congresso' },
   { src: 'assets/photos/escritorio-reuniao.jpg', alt: 'Reunião na sede SBK',                       caption: 'Operação +Controle −Burocracia' },
   { src: 'assets/photos/escritorio-equipe.jpg',  alt: 'Equipe SBK no escritório',                  caption: 'Time SBK na operação' },
@@ -19,11 +20,14 @@ const SOBRE_PHOTOS = [
 const GRID_FADE   = 1000;  // ms crossfade
 const GRID_CYCLE  = 11000; // ms entre trocas por célula
 
-// layout: 1 grande (esq, 2 linhas) + 2 menores empilhadas (dir)
+// layout: bloco superior (1 grande esq + 2 menores dir) + bloco inferior espelhado (2 menores esq + 1 grande dir)
 const CELL_LAYOUT = [
   { col: '1/2', row: '1/3', objPos: 'center 25%', caption: true,  label: 'SBK · 30 anos' },
   { col: '2/3', row: '1/2', objPos: 'center 40%', caption: true,  label: null },
   { col: '2/3', row: '2/3', objPos: 'center top',  caption: true,  label: null },
+  { col: '1/2', row: '3/4', objPos: 'center 35%', caption: true,  label: null },
+  { col: '1/2', row: '4/5', objPos: 'center 45%', caption: true,  label: null },
+  { col: '2/3', row: '3/5', objPos: 'center 30%', caption: true,  label: 'Operação · time' },
 ];
 
 function PhotoGrid({ photos }) {
@@ -32,9 +36,9 @@ function PhotoGrid({ photos }) {
 
   // Estado unificado para evitar fotos duplicadas entre células
   const [state, setState] = React.useState({
-    curr:   [0, 1, 2],
-    next:   [0, 1, 2],
-    fading: [false, false, false],
+    curr:   Array.from({ length: C }, (_, i) => i),
+    next:   Array.from({ length: C }, (_, i) => i),
+    fading: Array.from({ length: C }, () => false),
   });
   const stateRef = React.useRef(state);
   stateRef.current = state;
@@ -90,7 +94,7 @@ function PhotoGrid({ photos }) {
     <div style={{
       display: 'grid',
       gridTemplateColumns: '56fr 44fr',
-      gridTemplateRows: '270px 270px',
+      gridTemplateRows: '270px 270px 220px 220px',
       gap: 8,
     }}>
       {CELL_LAYOUT.map((l, i) => {

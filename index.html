@@ -32,6 +32,7 @@
 <script type="text/babel" src="src/router.jsx"></script>
 <script type="text/babel" src="src/data.jsx"></script>
 <script type="text/babel" src="src/RadialMap.jsx"></script>
+<script type="text/babel" src="src/ProductMockup.jsx"></script>
 <script type="text/babel" src="src/chrome.jsx"></script>
 <script type="text/babel" src="src/pages/Home.jsx"></script>
 <script type="text/babel" src="src/pages/Ecossistema.jsx"></script>
@@ -39,6 +40,9 @@
 <script type="text/babel" src="src/pages/SBKIA.jsx"></script>
 <script type="text/babel" src="src/pages/Sobre.jsx"></script>
 <script type="text/babel" src="src/pages/Resto.jsx"></script>
+<script type="text/babel" src="src/pages/TermosDeUso.jsx"></script>
+<script type="text/babel" src="src/pages/Privacidade.jsx"></script>
+<script type="text/babel" src="src/pages/Cookies.jsx"></script>
 <script type="text/babel" src="src/Tweaks.jsx"></script>
 
 <script type="text/babel">
@@ -69,6 +73,15 @@ function App() {
   } else if (route === '/contato') {
     page = <ContatoPage/>;
     label = '06 Contato';
+  } else if (route === '/termos') {
+    page = <TermosDeUsoPage/>;
+    label = '07 Termos de Uso';
+  } else if (route === '/privacidade') {
+    page = <PrivacidadePage/>;
+    label = '08 Privacidade';
+  } else if (route === '/cookies') {
+    page = <CookiesPage/>;
+    label = '09 Política de Cookies';
   } else {
     page = <HomePage/>;
     label = '00 Home';
