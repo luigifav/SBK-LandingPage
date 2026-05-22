@@ -131,10 +131,10 @@ function HomeHero() {
           gap: 0, padding: '40px 32px'
         }}>
           {[
-          ['30', 'anos de operação'],
+          ['+30', 'anos de operação'],
           ['9', 'módulos no ecossistema'],
           ['100%', 'tribunais monitorados'],
-          ['150K+', 'processos capturados/ano']].
+          ['300K+', 'processos capturados/ano']].
           map(([v, l], i) =>
           <Reveal key={i} delay={i * 80} direction="up">
               <div style={{

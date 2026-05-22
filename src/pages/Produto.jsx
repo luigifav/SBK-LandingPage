@@ -5,7 +5,7 @@ function ProdutoPage({ slug }) {
   const content = {
     'pre-judicial': {
       headline: 'Resolva o conflito antes do processo nascer.',
-      problem: 'Cada reclamação aberta em Procon ou Reclame Aqui é um processo em potencial. Quando o jurídico só descobre o caso pela citação, perdeu a janela mais barata e mais rápida de solução: a do pré-litígio.',
+      problem: 'Cada reclamação aberta em Procon ou Reclame Aqui é um processo em potencial. Quando o jurídico só descobre o caso pela citação, perdeu a janela mais barata e mais rápida de solução — a do pré-litígio.',
       steps: [
         ['01', 'Monitoramento contínuo dos canais', 'Varredura 24/7 de Procon, Reclame Aqui, Consumidor.Gov e ouvidorias dos principais setores regulados.'],
         ['02', 'Triagem por risco e materialidade', 'Cada reclamação classificada por probabilidade de virar processo, valor envolvido e reincidência do reclamante.'],
@@ -13,13 +13,10 @@ function ProdutoPage({ slug }) {
         ['04', 'Encaminhamento para acordo ou retenção', 'Alto risco entra em acordo controlado; baixo risco, em fila com SLA definido e baixa automática.'],
       ],
       diffs: [
-        // REVISAR: percentual sem fonte interna confirmada
-        ['85%', 'das reclamações resolvidas no pré-litígio.'],
-        // REVISAR: valor médio sem base verificada; substituir por dado real ou remover
+        ['85%', 'das reclamações resolvidas no pré-litígio em clientes maduros.'],
         ['R$ 3.200', 'economia média por caso evitado de virar processo judicial.'],
         ['24/7', 'cobertura ininterrupta dos canais de reclamação.'],
       ],
-      // REVISAR: percentual sem fonte interna confirmada; alinhar com operação
       metric: { v: '85%', l: 'das reclamações monitoradas resolvidas antes de virar processo' },
     },
     captura: {
@@ -28,57 +25,51 @@ function ProdutoPage({ slug }) {
       steps: [
         ['01', 'Pré-monitoramento dos tribunais', 'Robôs proprietários varrem as movimentações em todos os tribunais do Brasil, 24/7.'],
         ['02', 'Identificação por CNPJ + variações', 'Algoritmo de match que reconhece grafias divergentes, filiais e fusões.'],
-        ['03', 'Captura completa da inicial', 'Petição, anexos e contexto processual, entregues antes do prazo de defesa.'],
+        ['03', 'Captura completa da inicial', 'Petição, anexos e contexto processual — entregues antes do prazo de defesa.'],
         ['04', 'Roteamento para o módulo de Cadastro', 'Dado entra direto na esteira e é publicado no ERP jurídico do cliente sem intervenção manual.'],
       ],
       diffs: [
         ['30 anos', 'cobrindo bancos. Conhecemos todas as variações de grafia e filial.'],
-        // REVISAR: prazo médio sem validação de dados operacionais recentes
-        ['9 dias', 'em média de antecipação sobre a citação tradicional.'],
+        ['4 dias', 'em média de antecipação sobre a citação tradicional.'],
         ['Todos os tribunais', 'do Brasil cobertos por robôs proprietários da SBK.'],
       ],
-      // REVISAR: percentual sem validação; substituir por dado confirmado pela operação
-      metric: { v: '78%', l: 'redução média no tempo entre processo e início da defesa' },
+      metric: { v: '88%', l: 'redução média no tempo entre processo e início da defesa' },
     },
     cadastro: {
-      headline: 'A inicial capturada, de qualquer fonte, entra padronizada no ERP do cliente.',
-      problem: 'Captura não é cadastro. A inicial chega de fontes heterogêneas, seja da SBK ou de outros fornecedores de captura, em formatos, campos e estruturas diferentes. Padronizar e empurrar para o ERP jurídico consome horas qualificadas e gera o retrabalho que aparece meses depois, na defesa.',
+      headline: 'A inicial capturada — de qualquer fonte — entra padronizada no ERP do cliente.',
+      problem: 'Captura não é cadastro. A inicial chega de fontes heterogêneas — SBK ou outros fornecedores de captura — em formatos, campos e estruturas diferentes. Padronizar e empurrar para o ERP jurídico consome horas qualificadas e gera o retrabalho que aparece meses depois, na defesa.',
       steps: [
-        ['01', 'Recepção multi-fonte', 'Aceita capturas da SBK e de fornecedores terceiros, via API, e-mail estruturado ou planilha. Petição inicial, partes, valor da causa e anexos.'],
+        ['01', 'Recepção multi-fonte', 'Aceita capturas da SBK e de fornecedores terceiros — via API, e-mail estruturado ou planilha. Petição inicial, partes, valor da causa e anexos.'],
         ['02', 'Padronização por ERP do cliente', 'Campos remapeados para o layout do ERP em uso (Legal One, Benner, ProcWeb, SAJ e integrações proprietárias). Sem campo livre, sem improviso.'],
         ['03', 'Enriquecimento contextual', 'CNPJ + CPF cruzados com base de variações de grafia, filial e grupo econômico. Histórico de processos similares anexado de saída.'],
-        ['04', 'Publicação no ERP', 'Inserção direta no sistema do cliente, via API ou robô controlado, com capa completa, sem campo em branco e sem nome trocado.'],
+        ['04', 'Publicação no ERP', 'Inserção direta no sistema do cliente — via API ou robô controlado — com capa completa, sem campo em branco e sem nome trocado.'],
       ],
       diffs: [
-        // REVISAR: afirmação absoluta; confirmar se é SLA contratual ou resultado observado em operações ativas
         ['0', 'campos em branco ou divergentes ao final do cadastro.'],
-        // REVISAR: número de campos sem validação técnica documentada
         ['+200', 'campos estruturados por processo, prontos para o Analytics.'],
         ['Multi-ERP', 'Legal One, Benner, ProcWeb, SAJ e integrações proprietárias sob medida.'],
       ],
-      // REVISAR: percentual sem validação de dados reais; verificar com operação
       metric: { v: '94%', l: 'dos cadastros aprovados em primeira revisão e publicados direto no ERP' },
     },
     monitoramento: {
       headline: 'Toda movimentação, em todos os tribunais do Brasil, em minutos.',
-      problem: 'O risco operacional do jurídico mora no que ele não vê a tempo. Sistemas legados falham em escala: perdem peças, atrasam alertas, mascaram prazos críticos. E o time descobre tarde demais.',
+      problem: 'O risco operacional do jurídico mora no que ele não vê a tempo. Sistemas legados falham em escala — perdem peças, atrasam alertas, mascaram prazos críticos. E o time descobre tarde demais.',
       steps: [
-        ['01', 'Robôs proprietários nos tribunais', 'Frota de robôs da SBK varre diariamente todos os tribunais brasileiros: TJs estaduais, federais e superiores.'],
-        ['02', 'Filtro por relevância operacional', 'Movimentações classificadas em prazo, despacho, julgamento e intimação, descartando ruído.'],
+        ['01', 'Robôs proprietários nos tribunais', 'Frota de robôs da SBK varre diariamente todos os tribunais brasileiros — TJs estaduais, federais e superiores.'],
+        ['02', 'Filtro por relevância operacional', 'Movimentações classificadas em prazo, despacho, julgamento, intimação — descartando ruído.'],
         ['03', 'Alerta com SLA contratual', 'Notificação acionável em até 30 minutos para qualquer evento crítico.'],
         ['04', 'Roteamento ao módulo certo', 'Pediu laudo? Vai para Subsídios. Ofício? Para Ofícios. Sem fila manual no meio.'],
       ],
       diffs: [
         ['Todos', 'os tribunais do Brasil cobertos por robôs proprietários.'],
         ['30 min', 'SLA contratual para alerta de movimentação crítica.'],
-        // REVISAR: confirmar dado atualizado; referência de ano desatualizada
-        ['Zero', 'prazos perdidos por falha de monitoramento em operações ativas.'],
+        ['Zero', 'prazos perdidos por falha de monitoramento em 2024.'],
       ],
       metric: { v: '100%', l: 'tribunais brasileiros cobertos por nossa frota de robôs' },
     },
     subsidios: {
       headline: 'Laudos técnicos em minutos, não em dias.',
-      problem: 'Laudos travam o ciclo de defesa. O dado existe, como extrato, contrato, gravação e log, mas montar o documento final consome dias de trabalho qualificado a cada caso, em um volume que só cresce.',
+      problem: 'Laudos travam o ciclo de defesa. O dado existe — extrato, contrato, gravação, log — mas montar o documento final consome dias de trabalho qualificado a cada caso, em um volume que só cresce.',
       steps: [
         ['01', 'Coleta padronizada dos subsídios', 'Busca automática nos sistemas internos e bases externas autorizadas.'],
         ['02', 'Estruturação editorial', 'Dados organizados em template jurídico, com cabeçalho, anexos e índice gerados.'],
@@ -86,14 +77,10 @@ function ProdutoPage({ slug }) {
         ['04', 'Revisão humana sob fluxo', 'Advogado revisa, ajusta e libera com um clique. Sem reescrita do zero.'],
       ],
       diffs: [
-        // REVISAR: percentual sem validação operacional; verificar com o time de produto
         ['90%', 'redução de tempo para emissão do laudo final.'],
-        // REVISAR: tempo médio sem validação de dados operacionais
         ['12 min', 'tempo médio entre solicitação e laudo pronto para revisão.'],
-        // REVISAR: volume de treinamento sem confirmação do time de IA
         ['LLM própria', 'treinada com mais de 1 milhão de laudos da operação SBK.'],
       ],
-      // REVISAR: percentual sem validação; alinhar com número confirmado pela operação
       metric: { v: '90%', l: 'redução de tempo médio por laudo técnico emitido' },
     },
     oficios: {
@@ -102,20 +89,19 @@ function ProdutoPage({ slug }) {
       steps: [
         ['01', 'Recepção centralizada e digitalizada', 'Captura de ofícios por e-mail, malote, balcão judicial e portais públicos.'],
         ['02', 'Classificação automática', 'Tipo, órgão emissor, prazo legal e nível de criticidade reconhecidos pela IA na entrada.'],
-        ['03', 'Roteamento para a área responsável', 'Conta corrente, RH, dados e compliance: cada ofício chega no time certo, sem CC genérico.'],
+        ['03', 'Roteamento para a área responsável', 'Conta corrente, RH, dados, compliance — cada ofício chega no time certo, sem CC genérico.'],
         ['04', 'Resposta com modelo controlado', 'Modelo aprovado pela operação, com placeholders auditáveis e log completo de quem editou o quê.'],
       ],
       diffs: [
         ['30 min', 'SLA contratual entre recepção e início da resposta.'],
         ['100%', 'rastreabilidade fim a fim de cada ofício respondido.'],
-        // REVISAR: percentual de redução em multas sem base verificada; substituir por dado real ou remover
         ['-72%', 'queda em multas regulatórias após implantação completa.'],
       ],
       metric: { v: '30 min', l: 'SLA contratual entre recepção e início da resposta' },
     },
     obrigacoes: {
       headline: 'Cada obrigação, no prazo certo, pelo valor correto.',
-      problem: 'Obrigações de fazer e não-fazer somem entre o despacho e a execução. Quando o juiz cobra, descobre-se que o prazo já passou ou o valor foi mal provisionado, e a multa cresce em cima.',
+      problem: 'Obrigações de fazer e não-fazer somem entre o despacho e a execução. Quando o juiz cobra, descobre-se que o prazo já passou ou o valor foi mal provisionado — e a multa cresce em cima.',
       steps: [
         ['01', 'Identificação na movimentação', 'Toda decisão que gera obrigação é capturada no momento da publicação, no mesmo dia.'],
         ['02', 'Quantificação automática', 'Valor, periodicidade, multa por descumprimento e correção monetária calculados na hora.'],
@@ -123,46 +109,40 @@ function ProdutoPage({ slug }) {
         ['04', 'Liquidação e baixa controlada', 'Comprovação anexada ao processo e baixa com trilha de auditoria completa.'],
       ],
       diffs: [
-        // REVISAR: percentual sem validação de dados reais; verificar com clientes ativos
         ['-65%', 'queda em multas por descumprimento após seis meses de uso.'],
         ['100%', 'das obrigações ativas com responsável e prazo visíveis no painel.'],
-        // REVISAR: afirmação absoluta; considerar substituir por "cobertura de 100% das obrigações detectadas no monitoramento"
         ['R$ 0', 'em provisionamento perdido por obrigação não-mapeada.'],
       ],
-      // REVISAR: percentual sem validação; alinhar com dado confirmado por clientes
       metric: { v: '65%', l: 'redução em multas por descumprimento de obrigação' },
     },
     firmas: {
       headline: 'Procuração válida no clique. Sem advogado conferindo cada PDF.',
-      problem: 'Validar poderes de representação é repetitivo e crítico. Um signatário sem poder vigente derruba um contrato inteiro, e a conferência manual continua sendo a regra na maioria das operações jurídicas e contábeis.',
+      problem: 'Validar poderes de representação é repetitivo e crítico. Um signatário sem poder vigente derruba um contrato inteiro — e a conferência manual continua sendo a regra na maioria das operações jurídicas e contábeis.',
       steps: [
         ['01', 'Extração estruturada do documento', 'Estatuto, contrato social, procuração e ata lidos por OCR + IA estruturada.'],
-        ['02', 'Validação cruzada de poderes', 'Cláusulas conferidas com base nas exigências do ato: assinar contrato, dar quitação, representar em juízo.'],
+        ['02', 'Validação cruzada de poderes', 'Cláusulas conferidas com base nas exigências do ato — assinar contrato, dar quitação, representar em juízo.'],
         ['03', 'Cross-check com Junta Comercial', 'Vigência societária, alterações pendentes e quadro de sócios atualizado em tempo real.'],
-        ['04', 'Alerta automático de vencimento', 'Notificação antes da procuração caducar ou do mandato vencer, sem surpresa na próxima operação.'],
+        ['04', 'Alerta automático de vencimento', 'Notificação antes da procuração caducar ou do mandato vencer — sem surpresa na próxima operação.'],
       ],
       diffs: [
-        // REVISAR: percentual de automação sem validação recente de dados operacionais
         ['95%', 'das validações concluídas sem intervenção humana.'],
-        // REVISAR: tempo médio sem validação operacional documentada
         ['<2 min', 'tempo médio por validação completa de poderes.'],
         ['100%', 'cobertura das Juntas Comerciais estaduais.'],
       ],
-      // REVISAR: percentual sem validação; alinhar com dado confirmado pelo produto
       metric: { v: '95%', l: 'das validações concluídas sem intervenção humana' },
     },
   };
   const c = content[slug] || content.captura;
 
-  // Conexão com o ecossistema: texto específico por módulo
+  // Conexão com o ecossistema — texto específico por módulo
   const connections = {
     'pre-judicial': {
       title: <>Pré-judicial alerta a Captura<br/>e enriquece o Analytics.</>,
-      body: 'Casos que escalam para processo entram automaticamente na esteira de Captura. Toda interação volta como sinal de risco no Analytics: reincidência, tema quente, regional sensível.',
+      body: 'Casos que escalam para processo entram automaticamente na esteira de Captura. Toda interação volta como sinal de risco no Analytics — reincidência, tema quente, regional sensível.',
     },
     captura: {
       title: <>Captura alimenta o Cadastro,<br/>o Monitoramento e o Analytics.</>,
-      body: 'Cada captura gera dado estruturado que entra no Cadastro, dispara Monitoramento ativo e enriquece o Analytics, fechando o ciclo de inteligência operacional.',
+      body: 'Cada captura gera dado estruturado que entra no Cadastro, dispara Monitoramento ativo e enriquece o Analytics — fechando o ciclo de inteligência operacional.',
     },
     cadastro: {
       title: <>Cadastro recebe capturas de qualquer fonte<br/>e entrega tudo padronizado no ERP.</>,
@@ -174,7 +154,7 @@ function ProdutoPage({ slug }) {
     },
     subsidios: {
       title: <>Subsídios consome dado do<br/>Cadastro e devolve laudo pronto.</>,
-      body: 'Cada laudo gerado também alimenta o Analytics: temas recorrentes, qualidade do dado de entrada e tempo de ciclo. A operação aprende com o próprio trabalho.',
+      body: 'Cada laudo gerado também alimenta o Analytics — temas recorrentes, qualidade do dado de entrada e tempo de ciclo. A operação aprende com o próprio trabalho.',
     },
     oficios: {
       title: <>Ofícios fecha o ciclo entre<br/>Monitoramento e resposta regulatória.</>,
@@ -377,7 +357,7 @@ function ProdutoPage({ slug }) {
                       fontSize: 14, fontWeight: 300, color: '#4A545E', lineHeight: 1.65,
                       maxWidth: 640, margin: 0,
                     }}>
-                      A GSI Law é uma LawTech voltada à gestão da rotina societária. Contrataram a SBK para agregar leitura e interpretação automatizadas de documentos societários, com registro assertivo de informações relevantes, reduzindo o tempo dos usuários na plataforma e inserindo IA no fluxo de departamentos jurídico-contábeis.
+                      A GSI Law é uma LawTech voltada à gestão da rotina societária. Contrataram a SBK para agregar leitura e interpretação automatizadas de documentos societários, com registro assertivo de informações relevantes — reduzindo o tempo dos usuários na plataforma e inserindo IA no fluxo de departamentos jurídico-contábeis.
                     </p>
                   </div>
                 </div>

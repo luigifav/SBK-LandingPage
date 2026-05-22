@@ -1,5 +1,10 @@
 /* SBK Site — Layout & component styles built on top of tokens */
 
+@keyframes sbk-strip-scroll {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
 html, body {
   margin: 0;
   padding: 0;

@@ -22,14 +22,14 @@ function navigate(to) {
 function Link({ to, children, className, style, onClick }) {
   return (
     <a href={'#' + to}
-       className={className}
-       style={style}
-       onClick={(e) => {
-         e.preventDefault();
-         if (onClick) onClick(e);
-         navigate(to);
-       }}>{children}</a>
-  );
+    className={className}
+    style={style}
+    onClick={(e) => {
+      e.preventDefault();
+      if (onClick) onClick(e);
+      navigate(to);
+    }}>{children}</a>);
+
 }
 
 window.useHashRoute = useHashRoute;
