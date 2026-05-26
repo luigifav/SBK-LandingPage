@@ -85,7 +85,8 @@ function ProductMockup() {
   const prod = PRODUCTS[active];
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="pm-mockup-scroll" style={{ width: '100%' }}>
+    <div className="pm-mockup-root no-mobile-stack" style={{ width: '100%' }}>
       {/* tab strip ABOVE the window — clickable buttons to switch platforms */}
       <div style={{
         display: 'flex', gap: 6, marginBottom: -1, position: 'relative', zIndex: 2,
@@ -290,6 +291,7 @@ function ProductMockup() {
         .pm-fade-in   { animation: pm-fade-in 500ms cubic-bezier(.2,.6,.2,1) both; }
         .pm-screen-in { animation: pm-screen-in 600ms cubic-bezier(.2,.6,.2,1) both; }
       `}</style>
+    </div>
     </div>
   );
 }

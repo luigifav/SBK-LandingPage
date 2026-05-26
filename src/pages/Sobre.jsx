@@ -91,7 +91,7 @@ function PhotoGrid({ photos }) {
   }, [n]);
 
   return (
-    <div style={{
+    <div className="photo-grid-root no-mobile-stack" style={{
       display: 'grid',
       gridTemplateColumns: '56fr 44fr',
       gridTemplateRows: '270px 270px 220px 220px',

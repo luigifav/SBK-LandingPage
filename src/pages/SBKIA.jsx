@@ -169,8 +169,8 @@ function SBKIAPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
               {products.map((p, i) =>
               <Reveal key={i} delay={i * 80} direction="up">
-                  <div className="surf-card" style={{ padding: 32, display: 'flex', justifyContent: 'space-between', gap: 32, alignItems: 'center', cursor: 'pointer' }}>
-                    <div style={{ flex: 1 }}>
+                  <div className="surf-card sbkia-catalog-card" style={{ padding: 32, display: 'flex', justifyContent: 'space-between', gap: 32, alignItems: 'center', cursor: 'pointer' }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                         <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 22, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: 0 }}>{p.name}</h3>
                         {p.comingSoon ? (

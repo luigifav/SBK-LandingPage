@@ -1,0 +1,459 @@
+@charset "UTF-8";
+/* ============================================================
+   SBK Site — Mobile & responsive overrides
+   Strategy: aggressive grid collapsing via [style*=] attribute
+   selectors. ProductMockup and a few other layouts opt out via
+   the .no-mobile-stack marker.
+   ============================================================ */
+
+/* ─── Radial Ecosystem Map ─ component handles its own responsive
+   sizing via ResizeObserver; CSS overrides only kept for safety. ─── */
+@media (max-width: 720px) {
+  .radial-map-wrap { max-width: 100% !important; }
+}
+
+/* ─── Helper: prevent overflow root-wide ───────────────────── */
+html, body { overflow-x: hidden; }
+body { max-width: 100vw; }
+
+/* ─── ProductMockup horizontal scroll on small screens ─────── */
+.pm-mockup-scroll {
+  width: 100%;
+}
+@media (max-width: 980px) {
+  .pm-mockup-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* allow scroll past container padding */
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    /* fade mask on the right to hint scrollability */
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+  }
+  .pm-mockup-scroll::-webkit-scrollbar { height: 4px; }
+  .pm-mockup-scroll::-webkit-scrollbar-thumb {
+    background: rgba(7,80,86,0.3); border-radius: 4px;
+  }
+  .pm-mockup-root {
+    min-width: 940px;
+  }
+}
+
+/* ============================================================
+   ≤ 1100px — Larger tablet / small laptop
+   ============================================================ */
+@media (max-width: 1100px) {
+  .sbk-container { padding-left: 24px; padding-right: 24px; }
+  .sbk-container-narrow { padding-left: 24px; padding-right: 24px; }
+}
+
+/* ============================================================
+   ≤ 900px — Tablet
+   ============================================================ */
+@media (max-width: 900px) {
+  .sbk-container { padding-left: 22px; padding-right: 22px; }
+  .sbk-container-narrow { padding-left: 22px; padding-right: 22px; }
+
+  /* Section padding compaction */
+  .sec-pad-lg { padding-top: 76px !important; padding-bottom: 76px !important; }
+  .sec-pad-md { padding-top: 60px !important; padding-bottom: 60px !important; }
+  .sec-pad-sm { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .page-intro { padding-top: 120px !important; padding-bottom: 64px !important; }
+
+  /* Collapse generic 2-column inline grids → single column.
+     Excludes anything inside .no-mobile-stack (ProductMockup, PhotoGrid). */
+  .sbk-container [style*="grid-template-columns: 1fr 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1.05fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1.1fr 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1.4fr 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1.6fr 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 1.3fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 1.4fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 1.5fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 1.6fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 2fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1.5fr 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 220px 1fr"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: 1fr 420px"]:not(.no-mobile-stack *):not(.no-mobile-stack),
+  .sbk-container [style*="grid-template-columns: minmax"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 40px !important;
+    align-items: stretch !important;
+  }
+
+  /* 3-column repeat → 2-column on tablet */
+  .sbk-container [style*="grid-template-columns: repeat(3"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  /* 2-column repeat → 1-column on tablet (was uncovered)
+     Use minmax(0,1fr) so children with nowrap content can't expand the column. */
+  .sbk-container [style*="grid-template-columns: repeat(2"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+  /* 4-column repeat → 2-column on tablet (keeps KPI strips legible) */
+  .sbk-container [style*="grid-template-columns: repeat(4"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 28px !important;
+  }
+  /* When a "Reveal" wraps a card with gridColumn: span 3 inside a 2-col grid,
+     restore so it occupies the row. */
+  .sbk-container [style*="grid-column: span 3"]:not(.no-mobile-stack *) {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Inner grids inside CountUp / metric panels — borderLeft was used for
+     separators with paddingLeft; remove on mobile so values aren't shifted. */
+  .sbk-container [style*="grid-template-columns: repeat(4"]:not(.no-mobile-stack *) > div > [style*="border-left"] {
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+
+  /* Diferenciais "180px 1fr" double-col row inside Produto page diffs */
+  .sbk-container [style*="grid-template-columns: 180px 1fr"]:not(.no-mobile-stack *) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Hero side-panel: max-width caps applied in JSX—make them full width */
+  [class*="sbk-surface"] .sbk-container [style*="maxWidth: 380px"],
+  [class*="sbk-surface"] .sbk-container [style*="max-width: 380px"],
+  [class*="sbk-surface"] .sbk-container [style*="maxWidth: 420px"],
+  [class*="sbk-surface"] .sbk-container [style*="max-width: 420px"],
+  [class*="sbk-surface"] .sbk-container [style*="maxWidth: 400px"],
+  [class*="sbk-surface"] .sbk-container [style*="max-width: 400px"] {
+    max-width: 100% !important;
+  }
+
+  /* Hero in pages — reduce top padding (nav-pill room) */
+  section[class*="sbk-surface"][style*="padding-top: 148px"],
+  section[class*="sbk-surface"][style*="paddingTop: 148px"] {
+    padding-top: 112px !important;
+  }
+  section[class*="sbk-surface"][style*="padding-top: 160px"],
+  section[class*="sbk-surface"][style*="paddingTop: 160px"] {
+    padding-top: 120px !important;
+  }
+
+  /* Big H1 display headings — clamp() already shrinks, but enforce a max */
+  h1.h-display { font-size: clamp(38px, 9vw, 56px) !important; }
+  h2.h-large   { font-size: clamp(30px, 7.2vw, 44px) !important; }
+
+  /* Buttons stay tap-friendly */
+  .btn { padding: 14px 20px !important; font-size: 14px !important; }
+
+  /* HomeDualPath SBK card: image becomes a top "header" image */
+  .dual-path-photo {
+    position: relative !important;
+    width: 100% !important;
+    height: 220px !important;
+    object-position: center 30% !important;
+    top: auto !important;
+    right: auto !important;
+    display: block !important;
+    margin-bottom: 32px !important;
+  }
+  .dual-path-overlay {
+    display: none !important;
+  }
+  /* DualPath sections — kill huge inline padding & minHeight on mobile */
+  section.sbk-surface-deep[style*="padding-top: 96"] {
+    padding-top: 40px !important;
+    padding-bottom: 56px !important;
+    min-height: 0 !important;
+  }
+  section.sbk-ia[style*="padding-top: 128"] {
+    padding-top: 56px !important;
+    padding-bottom: 64px !important;
+  }
+  /* Page hero sections (Sobre, Ecossistema, SBK IA, Produto, Resto, legal pages) */
+  section[style*="padding-top: 148"] {
+    padding-top: 110px !important;
+    padding-bottom: 56px !important;
+  }
+  /* Long content sections (legal pages, contato, sbk-ia products) */
+  section[style*="padding-bottom: 128"]:not([style*="padding-top: 0"]) {
+    padding-bottom: 72px !important;
+  }
+  section[style*="padding-top: 80"][style*="padding-bottom: 128"] {
+    padding-top: 48px !important;
+    padding-bottom: 72px !important;
+  }
+  /* HomeHero giant top padding */
+  section[style*="padding-top: 160"] {
+    padding-top: 120px !important;
+    padding-bottom: 64px !important;
+    min-height: 0 !important;
+  }
+  /* Footer */
+  footer[style*="padding: 96px 0 32px"] {
+    padding: 64px 0 32px !important;
+  }
+  /* Tighten bullet list spacing inside DualPath sections */
+  section.sbk-surface-deep ul[style*="grid-template-columns: 1fr 1fr"],
+  section.sbk-ia ul[style*="grid-template-columns: 1fr 1fr"] {
+    gap: 12px !important;
+    margin-bottom: 28px !important;
+  }
+  /* The hidden grid pattern was way too prominent on mobile */
+  section.sbk-surface-deep .sbk-grid-pattern {
+    opacity: 0.025 !important;
+  }
+  /* Reduce gap between rule-caption and section content on DualPath */
+  section.sbk-surface-deep .rule-caption {
+    margin-bottom: 16px !important;
+  }
+  section.sbk-surface-deep [style*="margin-bottom: 48px"] {
+    margin-bottom: 28px !important;
+  }
+
+  /* Footer grid */
+  footer [style*="grid-template-columns: 1.6fr repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Final CTA card padding */
+  section [style*="border-radius: 24px"][style*="padding"] {
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+  }
+}
+
+/* ============================================================
+   ≤ 720px — Large phone / portrait tablet
+   ============================================================ */
+@media (max-width: 720px) {
+  /* 3-col → 1 col */
+  .sbk-container [style*="grid-template-columns: repeat(3"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+  /* footer down to 2 col */
+  footer [style*="grid-template-columns: 1.6fr repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Final CTA stack buttons */
+  section [style*="border-radius: 24px"] .btn {
+    width: 100%; justify-content: center;
+  }
+
+  /* SBK IA catálogo cards — stack heading row above CTA */
+  .sbkia-catalog-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 20px !important;
+    padding: 24px !important;
+  }
+  .sbkia-catalog-card .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   ≤ 560px — Phone
+   ============================================================ */
+@media (max-width: 560px) {
+  .sbk-container { padding-left: 18px; padding-right: 18px; }
+  .sbk-container-narrow { padding-left: 18px; padding-right: 18px; }
+
+  .sec-pad-lg { padding-top: 60px !important; padding-bottom: 60px !important; }
+  .sec-pad-md { padding-top: 52px !important; padding-bottom: 52px !important; }
+  .sec-pad-sm { padding-top: 40px !important; padding-bottom: 40px !important; }
+  .page-intro { padding-top: 104px !important; padding-bottom: 52px !important; }
+
+  /* All grids collapse to 1col, including 4-up KPI strips on small phone */
+  .sbk-container [style*="grid-template-columns: repeat(4"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+  }
+
+  /* CountUp metric strip in HomeHero (the after-hero bar) */
+  body > div#root section + div > .sbk-container[style*="grid-template-columns: repeat(4"],
+  body section .sbk-container[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
+  }
+
+  /* Headlines smaller */
+  h1.h-display { font-size: clamp(32px, 9.8vw, 44px) !important; line-height: 1.05 !important; }
+  h2.h-large   { font-size: clamp(26px, 7.6vw, 36px) !important; line-height: 1.12 !important; }
+  h3 { letter-spacing: -0.01em !important; }
+
+  /* Lead paragraphs */
+  p[style*="font-size: 18px"] { font-size: 16px !important; }
+  p[style*="fontSize: 18"] { font-size: 16px !important; }
+  p[style*="font-size: 17px"] { font-size: 15.5px !important; }
+
+  /* Big card CTA paddings */
+  section [style*="border-radius: 24px"] {
+    padding: 40px 24px !important;
+  }
+  /* Cases / panels inside articles */
+  .surf-card { padding: 24px !important; }
+  article.surf-card { padding: 24px !important; }
+  article.surf-card[style*="padding: 48px"] { padding: 28px !important; }
+
+  /* Connection card on Produto pages */
+  section.sbk-surface-light [style*="border-radius: 20px"][style*="padding: 64px 56px"],
+  section [style*="border-radius: 20px"][style*="padding: 64px 56px"] {
+    padding: 40px 28px !important;
+  }
+
+  /* Make all "rule-caption" smaller */
+  .rule-caption { font-size: 10px !important; gap: 12px !important; }
+
+  /* Hero side panel padding tighter */
+  .sbk-container [style*="border-radius: 16px"][style*="padding: 28px 24px"],
+  .sbk-container [style*="border-radius: 16px"][style*="padding: 24px"] {
+    padding: 22px 20px !important;
+  }
+
+  /* Diferenciais big number scales down */
+  .sbk-container [style*="font-size: 36px"][style*="JetBrains"],
+  .sbk-container [style*="font-size: 36px"][style*="Plus Jakarta Sans"] {
+    /* leave alone — keep them readable */
+  }
+
+  /* HomeDualPath SBK card */
+  .dual-path-photo { height: 190px !important; margin-bottom: 24px !important; }
+
+  /* DualPath sections — even tighter on phones */
+  section.sbk-surface-deep[style*="padding-top: 96"] {
+    padding-top: 32px !important;
+    padding-bottom: 48px !important;
+  }
+  section.sbk-ia[style*="padding-top: 128"] {
+    padding-top: 48px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* Convert HomeDualPath inner "ul" 2-column grid to 1col */
+  .sbk-container ul[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Cases page result inner grids and Resultados hero stat tiles */
+  .sbk-container [style*="grid-template-columns: 1fr 1fr"][style*="gap: 1px"] {
+    grid-template-columns: 1fr 1fr !important; /* keep as 2x2 grid on phone */
+  }
+
+  /* Hide scroll cue on small phones (saves space) */
+  a.scroll-cue {
+    font-size: 10px !important;
+  }
+  a.scroll-cue span:first-child { display: none !important; }
+
+  /* Big mobile stat — CountUp display sizes */
+  .sbk-container [style*="font-size: 64px"]:not(.no-mobile-stack *) {
+    font-size: 44px !important;
+  }
+  .sbk-container [style*="font-size: 44px"]:not(.no-mobile-stack *) {
+    font-size: 36px !important;
+  }
+  .sbk-container [style*="font-size: 40px"]:not(.no-mobile-stack *) {
+    font-size: 32px !important;
+  }
+  /* Connection metric on Produto pages — was clamp(72px, 9vw, 144px); compute small */
+  /* (clamp handles it, no override needed) */
+
+  /* Footer single col */
+  footer [style*="grid-template-columns: 1.6fr repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+  footer .hairline-dark + div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    text-align: left !important;
+  }
+  footer .hairline-dark + div > div:last-child {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  /* Final CTA buttons stack */
+  section [style*="border-radius: 24px"] [style*="display: flex"][style*="justifyContent: center"] {
+    flex-direction: column !important;
+  }
+
+  /* Contact form padding tighter */
+  form[style*="padding: 40px"] {
+    padding: 28px !important;
+  }
+  /* Submitted state */
+  div[style*="padding: 64px"][style*="border-radius: 14px"][style*="text-align: center"] {
+    padding: 40px 24px !important;
+  }
+
+  /* Legal pages (Termos / Privacidade / Cookies): tighten article padding
+     and disable sticky on the TOC so it doesn't pin awkwardly above content. */
+  section.sbk-surface-light article[id^="secao-"] {
+    padding: 24px !important;
+  }
+  section.sbk-surface-light [style*="position: sticky"][style*="top: 88"] {
+    position: static !important;
+  }
+  /* Legal page article heading scales */
+  section.sbk-surface-light article[id^="secao-"] h2 {
+    font-size: 20px !important;
+  }
+
+  /* Hero badges & rule-captions wrap well */
+  .rule-caption {
+    max-width: 100% !important;
+  }
+
+  /* Marketing strip (clients) gives less padding */
+  .sbk-marquee-wrap {
+    padding: 24px 0 !important;
+  }
+  .sbk-logo-item img,
+  .sbk-logo-text {
+    width: 220px !important;
+  }
+}
+
+/* ============================================================
+   ≤ 400px — Tiny phones
+   ============================================================ */
+@media (max-width: 400px) {
+  .sbk-container { padding-left: 16px; padding-right: 16px; }
+  .sbk-container-narrow { padding-left: 16px; padding-right: 16px; }
+
+  /* 4-up → 1col on tiny */
+  .sbk-container [style*="grid-template-columns: repeat(4"]:not(.no-mobile-stack *):not(.no-mobile-stack) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  h1.h-display { font-size: 32px !important; }
+  h2.h-large { font-size: 26px !important; }
+
+  /* CTA stacks */
+  [style*="display: flex"][style*="flexWrap: wrap"][style*="gap: 12px"] .btn {
+    width: 100% !important; justify-content: center !important;
+  }
+
+  /* Tighter card padding */
+  article.surf-card,
+  .surf-card { padding: 20px !important; }
+}
+
+/* ============================================================
+   Touch / pointer specific
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+  /* On touch devices, ensure logos in marquee are always visible */
+  .sbk-logo-item img {
+    filter: grayscale(100%) brightness(10) !important;
+    opacity: 0.45 !important;
+  }
+}

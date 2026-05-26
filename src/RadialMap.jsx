@@ -1,14 +1,44 @@
 /* global React, ECOSYSTEM_MODULES, ANALYTICS_MODULE, navigate */
 // RadialEcosystemMap — Analytics in the centre, modules orbiting
 
-function RadialEcosystemMap({ size = 560, tone = 'dark', interactive = true, onModuleClick }) {
+function RadialEcosystemMap({ size: maxSize = 560, tone = 'dark', interactive = true, onModuleClick }) {
   const [hover, setHover] = React.useState(null);
   const [mounted, setMounted] = React.useState(false);
+  const wrapRef = React.useRef(null);
+  // Initial size computed synchronously to avoid a 560→clamped flash on first paint
+  const initialSize = (() => {
+    if (typeof window === 'undefined') return maxSize;
+    const w = window.innerWidth;
+    const cap = w <= 480 ? Math.min(w - 32, 360)
+              : w <= 720 ? Math.min(w - 48, 440)
+              : maxSize;
+    return Math.max(280, Math.min(maxSize, cap));
+  })();
+  const [size, setSize] = React.useState(initialSize);
 
   React.useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
+
+  // Responsively clamp size to parent container width
+  React.useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || !el.parentElement) return;
+    const measure = () => {
+      const avail = el.parentElement.getBoundingClientRect().width;
+      // small phones: more aggressive shrink (saves vertical space)
+      const cap = window.innerWidth <= 480 ? Math.min(avail, 360)
+                : window.innerWidth <= 720 ? Math.min(avail, 440)
+                : Math.min(avail, maxSize);
+      setSize(Math.max(280, Math.min(maxSize, cap)));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el.parentElement);
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, [maxSize]);
 
   const isDark = tone === 'dark';
   const cx = size / 2;
@@ -53,7 +83,7 @@ function RadialEcosystemMap({ size = 560, tone = 'dark', interactive = true, onM
   const N = modules.length;
 
   return (
-    <div style={{ position: 'relative', width: size, height: size, margin: '0 auto' }}>
+    <div ref={wrapRef} className="radial-map-wrap" style={{ position: 'relative', width: size, height: size, margin: '0 auto', maxWidth: '100%' }}>
       {/* Concentric ring decoration */}
       <svg width={size} height={size} style={{ position: 'absolute', inset: 0 }}>
         <defs>

@@ -178,18 +178,68 @@ const inputStyle = {
 
 function ResultadosPage() {
   const cases = [
-    { tag: 'Banco · Top 5', title: '70% de redução no tempo entre processo e início da defesa',
-      ctx: 'Banco com 80M de clientes ativos e operação jurídica em 27 estados.',
-      body: 'Implantamos pré-captura inteligente em todos os tribunais cobertos. Antes da citação chegar, o processo já estava cadastrado, monitorado e roteado.',
-      m: [['70%', 'redução no time-to-defense'], ['6 dias', 'antecipação média'], ['12 estados', 'na primeira onda']] },
-    { tag: 'Financeira · Crédito', title: 'SLA de 30 minutos em ofícios com volume 4× maior',
-      ctx: 'Volume médio de 4.200 ofícios/mês com prazos legais de 24h.',
-      body: 'Substituímos a operação manual de 14 pessoas pela combinação SBK + módulo de Ofícios + Subsídios automatizados.',
-      m: [['30 min', 'SLA contratual'], ['100%', 'aderência ao prazo'], ['4×', 'crescimento absorvido']] },
-    { tag: 'Seguradora', title: '100% de cobertura em monitoramento, migração em 90 dias',
-      ctx: 'Migração do sistema legado proprietário para o ecossistema SBK.',
-      body: 'Plano de migração faseado por linha de produto. Monitoramento, Cadastro e Captura ativos em 90 dias sem perda de prazo no período de transição.',
-      m: [['100%', 'tribunais cobertos'], ['90 dias', 'migração completa'], ['0', 'prazos perdidos']] },
+    {
+      company: 'Agibank',
+      logo: 'assets/logos/final-agibank.png',
+      logoH: 24,
+      sector: 'Banco digital',
+      since: 'Cliente desde jun. 2024',
+      title: 'Captura antecipada, subsídios mais ágeis, revelias em queda.',
+      modules: [
+        { slug: 'captura',   label: 'Captura' },
+        { slug: 'cadastro',  label: 'Cadastro' },
+        { slug: 'subsidios', label: 'Subsídios e Laudos' },
+        { slug: 'oficios',   label: 'Ofícios' },
+      ],
+      quote: '"A SBK atua nos nossos processos de Captura, Cadastro, Laudo de Subsídios e Ofícios desde junho de 2024, e os resultados foram imediatos. Com a captura antecipada, conseguimos disponibilizar os subsídios com muito mais agilidade, o que aumentou diretamente a produtividade da nossa área. Além disso, ganhamos melhor controle e visibilidade sobre o volume de entradas e reduzimos significativamente as revelias."',
+      tail: 'O que mais me chama atenção na SBK é a flexibilidade e o espírito de parceria genuíno nos novos projetos. Não é só um fornecedor, é um parceiro que cresce junto com a gente.',
+      outcomes: [
+        'Resultados imediatos.',
+        'Subsídios mais ágeis.',
+        'Produtividade da área em alta.',
+        'Mais controle sobre o volume de entradas.',
+        'Revelias reduzidas significativamente.',
+      ],
+      lead: { name: 'Lorrane Polverini', role: 'Legal Leader · Captura, Cadastro, Laudo' },
+    },
+    {
+      company: 'Agibank',
+      logo: 'assets/logos/final-agibank.png',
+      logoH: 24,
+      sector: 'Banco digital',
+      since: 'Frente de Ofícios desde jan. 2026',
+      title: 'Gestão de ofícios com celeridade e prazos sob controle.',
+      modules: [
+        { slug: 'oficios', label: 'Ofícios' },
+      ],
+      quote: '"A SBK atua na Gestão de Ofícios da nossa área desde janeiro de 2026, e a diferença foi imediata. Ganhamos celeridade nas respostas e um controle de prazos muito mais preciso, o que impacta diretamente na eficiência do nosso departamento jurídico."',
+      tail: 'O grande diferencial da SBK está na inserção de inteligência artificial em plataformas voltadas para departamentos jurídicos, aliada a um atendimento rápido e uma parceria genuína com o cliente. Essa combinação faz toda a diferença no dia a dia.',
+      outcomes: [
+        'Diferença imediata após implantação.',
+        'Celeridade nas respostas a ofícios.',
+        'Controle de prazos muito mais preciso.',
+        'Eficiência do departamento jurídico em alta.',
+      ],
+      lead: { name: 'Felippe Guimarães de Oliveira', role: 'Legal Leader · Ofícios' },
+    },
+    {
+      company: 'GSI Law',
+      logo: null,
+      sector: 'Plataforma jurídica',
+      since: 'Parceiro desde mar. 2024',
+      title: 'IA embarcada na plataforma GSI para leitura de documentos societários.',
+      modules: [
+        { slug: 'firmas', label: 'Firmas e Poderes' },
+      ],
+      quote: '"O atendimento e a flexibilidade da SBK facilitam demais os desenvolvimentos dos nossos projetos de melhorias e desenvolvimento de novas funcionalidades na plataforma GSI."',
+      tail: 'A GSI Law contratou a SBK para agregar leitura e interpretação automatizadas de documentos societários à sua plataforma — poupando tempo dos usuários e inserindo IA na rotina de departamentos jurídico-contábeis.',
+      outcomes: [
+        'Leitura automatizada de documentos societários.',
+        'Tempo dos usuários da plataforma preservado.',
+        'IA na rotina de departamentos jurídico-contábeis.',
+      ],
+      lead: { name: 'Jonas Antunes', role: 'CEO · GSI Law' },
+    },
   ];
   return (
     <PageTransition>
@@ -212,34 +262,54 @@ function ResultadosPage() {
                   fontSize: 'clamp(42px, 5.2vw, 76px)', color: '#ECEFF3',
                   margin: '28px 0 24px', lineHeight: 1.02,
                 }}>
-                  Operação que se prova<br/>
-                  <span className="h-italic" style={{ color: '#5C9094' }}>em números.</span>
+                  Resultados<br/>
+                  <span className="h-italic" style={{ color: '#5C9094' }}>atestados pelos clientes.</span>
                 </h1>
-                <p style={{ fontSize: 18, fontWeight: 300, color: '#8FA5A1', maxWidth: 440, lineHeight: 1.65, margin: 0 }}>
-                  Casos reais de instituições financeiras que migraram sua esteira jurídica para a SBK.
+                <p style={{ fontSize: 18, fontWeight: 300, color: '#8FA5A1', maxWidth: 460, lineHeight: 1.65, margin: 0 }}>
+                  Cases com nome, área e líder do cliente. Os resultados são os que o time deles assina — sem médias de mercado, sem números genéricos.
                 </p>
               </Reveal>
               <Reveal direction="right" delay={160} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <div style={{
-                  display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px',
-                  background: 'rgba(236,239,243,0.09)', borderRadius: 16,
-                  overflow: 'hidden', width: '100%', maxWidth: 380,
+                  background: '#011C1A',
+                  border: '1px solid rgba(236,239,243,0.09)',
+                  borderRadius: 16,
+                  padding: 28,
+                  width: '100%', maxWidth: 380,
+                  display: 'flex', flexDirection: 'column', gap: 22,
                 }}>
-                  {[
-                    { v: '70%', l: 'redução no tempo de captura', tag: 'Banco Top 5' },
-                    { v: '30min', l: 'SLA para resposta de ofícios', tag: 'Financeira' },
-                    { v: '100%', l: 'tribunais monitorados', tag: 'Seguradora' },
-                    { v: '0', l: 'prazos perdidos na migração', tag: '90 dias' },
-                  ].map((m, i) => (
-                    <div key={i} style={{
-                      background: '#011C1A', padding: '24px 20px',
-                      borderRadius: i === 0 ? '15px 0 0 0' : i === 1 ? '0 15px 0 0' : i === 2 ? '0 0 0 15px' : '0 0 15px 0',
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div className="sbk-eyebrow" style={{ color: '#5C9094' }}>Cliente em destaque</div>
+                    <div style={{
+                      fontSize: 10, fontWeight: 600, letterSpacing: '0.14em',
+                      textTransform: 'uppercase', color: '#8FA5A1',
+                    }}>Banco digital</div>
+                  </div>
+                  <div style={{
+                    background: '#fff', borderRadius: 10, padding: '22px 16px',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center',
+                  }}>
+                    <img src="assets/logos/final-agibank.png" alt="Agibank"
+                      style={{ height: 34, width: 'auto', display: 'block' }} />
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: 13, fontWeight: 300, color: '#C8D7D4',
+                      lineHeight: 1.6, marginBottom: 14,
                     }}>
-                      <CountUp value={m.v} duration={1200} style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 0.95, color: '#ECEFF3', fontSize: 40, marginBottom: 6 }} />
-                      <div style={{ fontSize: 12, fontWeight: 300, color: '#8FA5A1', lineHeight: 1.4, marginBottom: 8 }}>{m.l}</div>
-                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#5C9094' }}>{m.tag}</div>
+                      Cliente desde junho de 2024. Hoje opera 4 módulos do ecossistema, com dois Legal Leaders responsáveis pela parceria.
                     </div>
-                  ))}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {['Captura', 'Cadastro', 'Subsídios e Laudos', 'Ofícios'].map(m => (
+                        <span key={m} style={{
+                          fontSize: 11, fontWeight: 500, color: '#ECEFF3',
+                          padding: '5px 10px', borderRadius: 6,
+                          background: 'rgba(236,239,243,0.06)',
+                          border: '1px solid rgba(236,239,243,0.14)',
+                        }}>{m}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -253,24 +323,103 @@ function ResultadosPage() {
               {cases.map((c, i) => (
                 <Reveal key={i} delay={i * 80} direction="up">
                   <article className="surf-card" style={{ padding: 48 }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 64, alignItems: 'start' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 56, alignItems: 'start' }}>
+                      {/* LEFT — identity + quote + attribution */}
                       <div>
-                        <div className="sbk-eyebrow" style={{ color: '#075056' }}>{c.tag}</div>
-                        <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 30, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '20px 0 20px' }}>{c.title}</h3>
-                        <p style={{ fontSize: 14, fontWeight: 300, color: '#4A545E', margin: '0 0 16px' }}>
-                          <strong style={{ color: '#012824', fontWeight: 600 }}>Contexto. </strong>{c.ctx}
-                        </p>
-                        <p style={{ fontSize: 14, fontWeight: 300, color: '#4A545E', lineHeight: 1.6, margin: 0 }}>
-                          <strong style={{ color: '#012824', fontWeight: 600 }}>O que a SBK fez. </strong>{c.body}
-                        </p>
-                      </div>
-                      <div style={{ background: '#012824', borderRadius: 14, padding: 32, color: '#ECEFF3' }}>
-                        <div className="sbk-eyebrow" style={{ color: '#5C9094', marginBottom: 20 }}>Resultados</div>
-                        {c.m.map(([v, l], j) => (
-                          <div key={j} style={{ paddingTop: 16, paddingBottom: 16, borderTop: j > 0 ? '1px solid rgba(236,239,243,0.14)' : 'none' }}>
-                            <CountUp value={v} duration={1000} style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 0.95, color: '#ECEFF3', fontSize: 36 }} label={l} labelStyle={{ fontSize: 12, fontWeight: 300, color: '#8FA5A1', marginTop: 4 }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 22 }}>
+                          {c.logo ? (
+                            <img src={c.logo} alt={c.company}
+                              style={{ height: c.logoH || 24, width: 'auto', display: 'block' }} />
+                          ) : (
+                            <span style={{
+                              fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: 600,
+                              color: '#012824', letterSpacing: '-0.01em',
+                            }}>{c.company}</span>
+                          )}
+                          <span aria-hidden style={{ width: 1, height: 14, background: '#DCE0E6' }} />
+                          <span style={{
+                            fontSize: 11, fontWeight: 600, letterSpacing: '0.14em',
+                            textTransform: 'uppercase', color: '#8FA5A1',
+                          }}>{c.since}</span>
+                        </div>
+
+                        <h3 style={{
+                          fontFamily: 'Plus Jakarta Sans', fontSize: 28, fontWeight: 600,
+                          color: '#012824', letterSpacing: '-0.02em', lineHeight: 1.2,
+                          margin: '0 0 28px'
+                        }}>{c.title}</h3>
+
+                        <svg aria-hidden width="26" height="18" viewBox="0 0 32 22" fill="none"
+                          style={{ marginBottom: 16, display: 'block' }}>
+                          <path d="M0 22V13.2C0 9.6 0.9 6.6 2.7 4.2C4.5 1.8 7.1 0.4 10.5 0L11.8 2.4C9.8 2.9 8.2 3.9 7 5.4C5.8 6.9 5.2 8.6 5.2 10.5H9.8V22H0ZM18.2 22V13.2C18.2 9.6 19.1 6.6 20.9 4.2C22.7 1.8 25.3 0.4 28.7 0L30 2.4C28 2.9 26.4 3.9 25.2 5.4C24 6.9 23.4 8.6 23.4 10.5H28V22H18.2Z" fill="#DCE0E6" />
+                        </svg>
+                        <blockquote style={{
+                          fontFamily: 'Plus Jakarta Sans', fontSize: 17, fontWeight: 400,
+                          color: '#012824', lineHeight: 1.55, letterSpacing: '-0.01em',
+                          margin: '0 0 18px', fontStyle: 'italic',
+                        }}>
+                          {c.quote}
+                        </blockquote>
+                        <p style={{
+                          fontSize: 13.5, fontWeight: 300, color: '#4A545E',
+                          lineHeight: 1.65, margin: '0 0 28px',
+                        }}>{c.tail}</p>
+
+                        <div style={{
+                          paddingTop: 20, borderTop: '1px solid #DCE0E6',
+                        }}>
+                          <div style={{
+                            fontSize: 14, fontWeight: 600, color: '#012824', letterSpacing: '-0.01em',
+                          }}>{c.lead.name}</div>
+                          <div style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', marginTop: 2 }}>
+                            {c.lead.role}
                           </div>
-                        ))}
+                        </div>
+                      </div>
+
+                      {/* RIGHT — modules + outcomes */}
+                      <div style={{
+                        background: '#012824', borderRadius: 14, padding: 32, color: '#ECEFF3',
+                      }}>
+                        <div className="sbk-eyebrow" style={{ color: '#5C9094', marginBottom: 14 }}>
+                          {c.modules.length > 1 ? 'Módulos ativos' : 'Módulo ativo'}
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 28 }}>
+                          {c.modules.map(m => (
+                            <Link key={m.slug} to={'/produto/' + m.slug} style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 6,
+                              padding: '6px 10px',
+                              border: '1px solid rgba(236,239,243,0.18)',
+                              borderRadius: 6,
+                              fontSize: 12, fontWeight: 500, color: '#ECEFF3',
+                              textDecoration: 'none',
+                              background: 'rgba(236,239,243,0.04)',
+                            }}>
+                              {m.label}
+                              <span style={{ fontSize: 10, opacity: 0.6 }}>→</span>
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div className="sbk-eyebrow" style={{ color: '#5C9094', marginBottom: 14 }}>
+                          O que o cliente registra
+                        </div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                          {c.outcomes.map((o, j) => (
+                            <li key={j} style={{
+                              padding: '12px 0',
+                              borderTop: j > 0 ? '1px solid rgba(236,239,243,0.14)' : 'none',
+                              display: 'flex', gap: 12, alignItems: 'flex-start',
+                              fontSize: 13.5, fontWeight: 300, color: '#ECEFF3', lineHeight: 1.5,
+                            }}>
+                              <span aria-hidden style={{
+                                flex: '0 0 auto', width: 6, height: 6, borderRadius: 999,
+                                background: '#5C9094', marginTop: 7,
+                              }} />
+                              <span>{o}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </article>

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* SBK Site — Layout & component styles built on top of tokens */
 
 @keyframes sbk-strip-scroll {
@@ -130,7 +131,7 @@ html, body {
 
 /* link icons (no SVG dep) */
 .arrow-r::after {
-  content: "→";
+  content: "\2192";
   display: inline-block;
   margin-left: 6px;
   transition: transform var(--sbk-dur-base) var(--sbk-ease-standard);
@@ -219,6 +220,23 @@ a.arrow-r:hover::after { transform: translateX(3px); }
 .fade-up.d2 { animation-delay: 120ms; }
 .fade-up.d3 { animation-delay: 180ms; }
 .fade-up.d4 { animation-delay: 240ms; }
+
+/* smooth anchor scroll */
+html { scroll-behavior: smooth; }
+
+/* scroll cue — subtle bounce + brighten on hover */
+@keyframes scroll-cue-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+.scroll-cue { transition: color 200ms ease; }
+.scroll-cue:hover { color: #ECEFF3 !important; }
+.scroll-cue:hover .scroll-cue-arrow { color: #ECEFF3 !important; }
+.scroll-cue-arrow {
+  display: inline-block;
+  animation: scroll-cue-bounce 1.8s ease-in-out infinite;
+  transition: color 200ms ease;
+}
 
 /* RadialMap core pulse */
 @keyframes sbk-core-pulse {

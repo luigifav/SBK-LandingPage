@@ -4,6 +4,7 @@
 function Header({ tone = 'dark' }) {
   const [scrolled, setScrolled] = React.useState(false);
   const [entered, setEntered] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const route = typeof useHashRoute === 'function' ? useHashRoute() : '/';
 
   React.useEffect(() => {
@@ -18,6 +19,18 @@ function Header({ tone = 'dark' }) {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // close menu on route change
+  React.useEffect(() => { setMenuOpen(false); }, [route]);
+
+  // lock body scroll when menu open
+  React.useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [menuOpen]);
 
   const links = [
   { to: '/ecossistema', label: 'Ecossistema' },
@@ -99,6 +112,91 @@ function Header({ tone = 'dark' }) {
         }
         @media (max-width: 780px) {
           .sbk-nav-links { display: none !important; }
+          .sbk-nav-burger { display: inline-flex !important; }
+        }
+        .sbk-nav-burger {
+          display: none;
+          align-items: center; justify-content: center;
+          width: 38px; height: 38px;
+          background: rgba(236,239,243,0.06);
+          border: 1px solid rgba(236,239,243,0.14);
+          border-radius: 10px;
+          color: #ECEFF3;
+          cursor: pointer; padding: 0;
+          margin-left: 6px;
+          transition: background 180ms, border-color 180ms;
+        }
+        .sbk-nav-burger:hover { background: rgba(236,239,243,0.10); border-color: rgba(92,144,148,0.4); }
+        .sbk-nav-burger:active { transform: scale(0.96); }
+
+        /* Mobile drawer */
+        .sbk-mobile-drawer {
+          position: fixed; inset: 0;
+          z-index: 200;
+          background: rgba(1,20,18,0.55);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 240ms cubic-bezier(.2,0,0,1);
+        }
+        .sbk-mobile-drawer.open {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .sbk-mobile-drawer-panel {
+          position: absolute;
+          top: 0; right: 0; bottom: 0;
+          width: min(360px, 88vw);
+          background: linear-gradient(180deg, #012824 0%, #011C1A 100%);
+          border-left: 1px solid rgba(92,144,148,0.18);
+          box-shadow: -24px 0 60px rgba(0,0,0,0.4);
+          padding: 84px 28px 32px;
+          display: flex; flex-direction: column;
+          transform: translateX(100%);
+          transition: transform 320ms cubic-bezier(.2,0,0,1);
+          overflow-y: auto;
+        }
+        .sbk-mobile-drawer.open .sbk-mobile-drawer-panel {
+          transform: translateX(0);
+        }
+        .sbk-mobile-close {
+          position: absolute; top: 22px; right: 22px;
+          width: 40px; height: 40px;
+          background: rgba(236,239,243,0.06);
+          border: 1px solid rgba(236,239,243,0.14);
+          border-radius: 12px;
+          color: #ECEFF3;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; padding: 0;
+          transition: background 180ms, border-color 180ms;
+        }
+        .sbk-mobile-close:hover {
+          background: rgba(236,239,243,0.10);
+          border-color: rgba(92,144,148,0.4);
+        }
+        .sbk-mobile-link {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 22px; font-weight: 500;
+          color: rgba(236,239,243,0.85);
+          padding: 18px 0;
+          border-bottom: 1px solid rgba(236,239,243,0.08);
+          text-decoration: none;
+          display: flex; align-items: center; justify-content: space-between;
+          letter-spacing: -0.01em;
+          transition: color 180ms;
+        }
+        .sbk-mobile-link:hover { color: #ECEFF3; }
+        .sbk-mobile-link.active { color: #ECEFF3; }
+        .sbk-mobile-link.active::after {
+          content: '';
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #5C9094;
+        }
+        .sbk-mobile-link-arrow {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 14px; color: #5C9094;
+          opacity: 0.6;
         }
       `}</style>
 
@@ -106,7 +204,8 @@ function Header({ tone = 'dark' }) {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         pointerEvents: 'none',
         display: 'flex', justifyContent: 'center',
-        padding: '16px 24px'
+        padding: '16px 24px',
+        paddingTop: 'max(16px, env(safe-area-inset-top))'
       }}>
         <div
           className="sbk-nav-pill"
@@ -162,8 +261,89 @@ function Header({ tone = 'dark' }) {
           <Link to="/contato" className="sbk-nav-cta">
             Fale conosco
           </Link>
+
+          {/* Burger — mobile only */}
+          <button
+            type="button"
+            className="sbk-nav-burger"
+            aria-label="Abrir menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(true)}>
+            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+              <line x1="1" y1="2"  x2="17" y2="2" />
+              <line x1="1" y1="7"  x2="17" y2="7" />
+              <line x1="1" y1="12" x2="17" y2="12" />
+            </svg>
+          </button>
         </div>
       </header>
+
+      {/* Mobile drawer */}
+      <div
+        className={`sbk-mobile-drawer${menuOpen ? ' open' : ''}`}
+        onClick={(e) => { if (e.target === e.currentTarget) setMenuOpen(false); }}>
+        <div className="sbk-mobile-drawer-panel">
+          <button
+            type="button"
+            className="sbk-mobile-close"
+            aria-label="Fechar menu"
+            onClick={() => setMenuOpen(false)}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+              <line x1="1" y1="1" x2="13" y2="13" />
+              <line x1="13" y1="1" x2="1" y2="13" />
+            </svg>
+          </button>
+
+          <Link to="/" className="sbk-mobile-link" style={{ borderTop: '1px solid rgba(236,239,243,0.08)' }}>
+            Home
+            <span className="sbk-mobile-link-arrow">→</span>
+          </Link>
+          {links.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`sbk-mobile-link${isActive(l.to) ? ' active' : ''}`}>
+              {l.label}
+              {!isActive(l.to) && <span className="sbk-mobile-link-arrow">→</span>}
+            </Link>
+          ))}
+
+          <div style={{ flex: 1, minHeight: 32 }} />
+
+          <Link
+            to="/contato"
+            style={{
+              background: '#ECEFF3',
+              color: '#012824',
+              padding: '16px 24px',
+              borderRadius: 12,
+              fontFamily: 'Plus Jakarta Sans, sans-serif',
+              fontSize: 15,
+              fontWeight: 600,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 12,
+              marginTop: 24,
+            }}>
+            Fale conosco
+            <span style={{ fontFamily: 'JetBrains Mono', fontSize: 14 }}>→</span>
+          </Link>
+
+          <div style={{
+            marginTop: 24, paddingTop: 20,
+            borderTop: '1px solid rgba(236,239,243,0.08)',
+            display: 'flex', alignItems: 'center', gap: 10,
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 10, color: '#7A9FA3',
+            letterSpacing: '0.18em', textTransform: 'uppercase',
+          }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#5C9094' }} />
+            30 anos · Legal Operations
+          </div>
+        </div>
+      </div>
     </>);
 
 }
