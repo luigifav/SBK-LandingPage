@@ -15,7 +15,7 @@ function buildLeadPayload(tab, values) {
   return {
     firstName,
     lastName,
-    email: values.email || '',
+    emails: values.email || '',
     company: values.empresa || '',
     jobTitle: values.cargo || '',
     volume: values.volume || '',
@@ -71,10 +71,17 @@ function ContatoPage() {
 
       if (!res.ok) {
         let detail = '';
+        let code = '';
         try {
           const err = await res.json();
+          code = err.code || '';
           detail = err.messages?.join(' ') || err.message || '';
         } catch (_) { /* resposta não-JSON */ }
+        if (code === 'INVALID_WORKFLOW_STATUS' || /has not been activated/i.test(detail)) {
+          throw new Error(
+            'O workflow do CRM ainda não está ativo. No Twenty: Settings → Workflows → abra este workflow → clique em Activate.'
+          );
+        }
         throw new Error(detail || `Não foi possível enviar (${res.status}). Tente novamente.`);
       }
 
