@@ -15,7 +15,9 @@ function buildLeadPayload(tab, values) {
   return {
     firstName,
     lastName,
-    emails: values.email || '',
+    emails: {
+      primaryEmail: values.email || '',
+    },
     company: values.empresa || '',
     jobTitle: values.cargo || '',
     volume: values.volume || '',
