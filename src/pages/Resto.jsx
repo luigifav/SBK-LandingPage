@@ -1,8 +1,91 @@
 /* global React, Link, Reveal, StaggerReveal, CountUp, PageTransition */
 
+const TWENTY_WEBHOOK_URL =
+  'https://sbk.twenty.com/webhooks/workflows/94b124fa-d591-4467-83e5-6dc34f530545/eef07e54-585d-4af1-9eb0-42bbd3476187';
+
+function splitFullName(fullName) {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return { firstName: '', lastName: '' };
+  if (parts.length === 1) return { firstName: parts[0], lastName: '' };
+  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
+}
+
+function buildLeadPayload(tab, values) {
+  const { firstName, lastName } = splitFullName(values.nome || '');
+  return {
+    firstName,
+    lastName,
+    email: values.email || '',
+    company: values.empresa || '',
+    jobTitle: values.cargo || '',
+    volume: values.volume || '',
+    message: values.mensagem || '',
+    segmento: tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA',
+    source: 'site-sbk-contato',
+  };
+}
+
 function ContatoPage() {
   const [tab, setTab] = React.useState('enterprise');
   const [submitted, setSubmitted] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState('');
+  const [formValues, setFormValues] = React.useState({
+    nome: '', cargo: '', empresa: '', email: '', volume: '', mensagem: '',
+  });
+
+  const emptyForm = { nome: '', cargo: '', empresa: '', email: '', volume: '', mensagem: '' };
+
+  const setField = (id, value) => {
+    setFormValues(prev => ({ ...prev, [id]: value }));
+    if (submitError) setSubmitError('');
+  };
+
+  const handleTabChange = (nextTab) => {
+    setTab(nextTab);
+    setSubmitted(false);
+    setSubmitError('');
+    setFormValues(emptyForm);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError('');
+
+    if (!formValues.nome.trim() || !formValues.email.trim()) {
+      setSubmitError('Preencha nome e e-mail para continuar.');
+      return;
+    }
+    if (tab === 'enterprise' && !formValues.empresa.trim()) {
+      setSubmitError('Informe o nome da empresa.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(TWENTY_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildLeadPayload(tab, formValues)),
+      });
+
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const err = await res.json();
+          detail = err.messages?.join(' ') || err.message || '';
+        } catch (_) { /* resposta não-JSON */ }
+        throw new Error(detail || `Não foi possível enviar (${res.status}). Tente novamente.`);
+      }
+
+      setSubmitted(true);
+      setFormValues(emptyForm);
+    } catch (err) {
+      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão e tente novamente.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const fields = tab === 'enterprise' ? [
     { id: 'nome', label: 'Nome completo', type: 'text', placeholder: 'Maria Silva' },
@@ -89,7 +172,7 @@ function ContatoPage() {
                     { id: 'enterprise', t: 'Enterprise', d: 'Grandes empresas buscando serviço dedicado.' },
                     { id: 'midmarket', t: 'Mid-market · SBK IA', d: 'Empresa querendo autosserviço e velocidade.' },
                   ].map(opt => (
-                    <button key={opt.id} onClick={() => { setTab(opt.id); setSubmitted(false); }}
+                    <button key={opt.id} onClick={() => handleTabChange(opt.id)}
                       style={{
                         textAlign: 'left', padding: 20,
                         background: tab === opt.id ? '#012824' : '#FFFFFF',
@@ -122,7 +205,7 @@ function ContatoPage() {
                       </p>
                     </div>
                   ) : (
-                    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+                    <form onSubmit={handleSubmit}
                       style={{ background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 14, padding: 40 }}>
                       <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 24, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
                         {tab === 'enterprise' ? 'Fale com nosso time comercial' : 'Solicite acesso à SBK IA'}
@@ -135,22 +218,61 @@ function ContatoPage() {
                           <div key={f.id}>
                             <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#012824', marginBottom: 6, letterSpacing: '0.02em' }}>{f.label}</label>
                             {f.type === 'textarea' ? (
-                              <textarea placeholder={f.placeholder} rows={4} className="sbk-input" style={inputStyle} />
+                              <textarea
+                                name={f.id}
+                                value={formValues[f.id]}
+                                onChange={(ev) => setField(f.id, ev.target.value)}
+                                placeholder={f.placeholder}
+                                rows={4}
+                                className="sbk-input"
+                                style={inputStyle}
+                              />
                             ) : f.type === 'select' ? (
-                              <select className="sbk-input" style={{ ...inputStyle, cursor: 'pointer', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23012824' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center', paddingRight: 40 }} defaultValue="">
+                              <select
+                                name={f.id}
+                                value={formValues[f.id]}
+                                onChange={(ev) => setField(f.id, ev.target.value)}
+                                className="sbk-input"
+                                style={{ ...inputStyle, cursor: 'pointer', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23012824' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center', paddingRight: 40 }}
+                              >
                                 <option value="" disabled>Selecione</option>
-                                {f.options.map(o => <option key={o}>{o}</option>)}
+                                {f.options.map(o => <option key={o} value={o}>{o}</option>)}
                               </select>
                             ) : (
-                              <input type={f.type} placeholder={f.placeholder} className="sbk-input" style={inputStyle} />
+                              <input
+                                type={f.type}
+                                name={f.id}
+                                value={formValues[f.id]}
+                                onChange={(ev) => setField(f.id, ev.target.value)}
+                                placeholder={f.placeholder}
+                                className="sbk-input"
+                                style={inputStyle}
+                                required={f.id === 'nome' || f.id === 'email' || (tab === 'enterprise' && f.id === 'empresa')}
+                              />
                             )}
                           </div>
                         ))}
                       </div>
+                      {submitError ? (
+                        <p role="alert" style={{
+                          fontSize: 13, fontWeight: 500, color: '#B42318',
+                          margin: '20px 0 0', padding: '12px 14px',
+                          background: 'rgba(180,35,24,0.06)', borderRadius: 8,
+                          border: '1px solid rgba(180,35,24,0.18)',
+                        }}>
+                          {submitError}
+                        </p>
+                      ) : null}
                       <button type="submit"
+                        disabled={submitting}
                         className={tab === 'enterprise' ? 'btn btn-primary-dark arrow-r' : 'btn btn-ia arrow-r'}
-                        style={{ marginTop: 28, width: '100%', justifyContent: 'center', padding: 16 }}>
-                        {tab === 'enterprise' ? 'Enviar' : 'Criar conta SBK IA'}
+                        style={{
+                          marginTop: 28, width: '100%', justifyContent: 'center', padding: 16,
+                          opacity: submitting ? 0.7 : 1, cursor: submitting ? 'wait' : 'pointer',
+                        }}>
+                        {submitting
+                          ? 'Enviando…'
+                          : tab === 'enterprise' ? 'Enviar' : 'Criar conta SBK IA'}
                       </button>
                       <p style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', margin: '20px 0 0', textAlign: 'center' }}>
                         Ao enviar, você concorda com nossa política de privacidade · LGPD compliance.
