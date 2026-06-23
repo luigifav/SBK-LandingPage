@@ -1,29 +1,6 @@
 /* global React, Link, Reveal, StaggerReveal, CountUp, PageTransition */
 
-const TWENTY_WEBHOOK_URL =
-  'https://sbk.twenty.com/webhooks/workflows/94b124fa-d591-4467-83e5-6dc34f530545/eef07e54-585d-4af1-9eb0-42bbd3476187';
-
-function splitFullName(fullName) {
-  const parts = fullName.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return { firstName: '', lastName: '' };
-  if (parts.length === 1) return { firstName: parts[0], lastName: '' };
-  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
-}
-
-function buildLeadPayload(tab, values) {
-  const { firstName, lastName } = splitFullName(values.nome || '');
-  return {
-    firstName,
-    lastName,
-    email: values.email || '',
-    company: values.empresa || '',
-    jobTitle: values.cargo || '',
-    volume: values.volume || '',
-    message: values.mensagem || '',
-    segmento: tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA',
-    source: 'site-sbk-contato',
-  };
-}
+const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/yr3v2yjfxxfrhamq82judaxjh6sagk4j';
 
 function ContatoPage() {
   const [tab, setTab] = React.useState('enterprise');
@@ -63,32 +40,29 @@ function ContatoPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(TWENTY_WEBHOOK_URL, {
+      const segmento = tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA';
+
+      const res = await fetch(MAKE_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildLeadPayload(tab, formValues)),
+        body: JSON.stringify({
+          nome:     formValues.nome,
+          email:    formValues.email,
+          cargo:    formValues.cargo    || '',
+          empresa:  formValues.empresa  || '',
+          volume:   formValues.volume   || '',
+          mensagem: formValues.mensagem || '',
+          segmento,
+          origem:   'Formulário sbk.com.br',
+        }),
       });
 
-      if (!res.ok) {
-        let detail = '';
-        let code = '';
-        try {
-          const err = await res.json();
-          code = err.code || '';
-          detail = err.messages?.join(' ') || err.message || '';
-        } catch (_) { /* resposta não-JSON */ }
-        if (code === 'INVALID_WORKFLOW_STATUS' || /has not been activated/i.test(detail)) {
-          throw new Error(
-            'O workflow do CRM ainda não está ativo. No Twenty: Settings → Workflows → abra este workflow → clique em Activate.'
-          );
-        }
-        throw new Error(detail || `Não foi possível enviar (${res.status}). Tente novamente.`);
-      }
+      if (!res.ok) throw new Error(`Erro ${res.status}. Tente novamente.`);
 
       setSubmitted(true);
       setFormValues(emptyForm);
     } catch (err) {
-      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão e tente novamente.');
+      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão.');
     } finally {
       setSubmitting(false);
     }
