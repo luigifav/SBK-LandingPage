@@ -1,29 +1,7 @@
 /* global React, Link, Reveal, StaggerReveal, CountUp, PageTransition */
 
-const TWENTY_WEBHOOK_URL =
-  'https://sbk.twenty.com/webhooks/workflows/94b124fa-d591-4467-83e5-6dc34f530545/eef07e54-585d-4af1-9eb0-42bbd3476187';
-
-function splitFullName(fullName) {
-  const parts = fullName.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return { firstName: '', lastName: '' };
-  if (parts.length === 1) return { firstName: parts[0], lastName: '' };
-  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
-}
-
-function buildLeadPayload(tab, values) {
-  const { firstName, lastName } = splitFullName(values.nome || '');
-  return {
-    firstName,
-    lastName,
-    email: values.email || '',
-    company: values.empresa || '',
-    jobTitle: values.cargo || '',
-    volume: values.volume || '',
-    message: values.mensagem || '',
-    segmento: tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA',
-    source: 'site-sbk-contato',
-  };
-}
+const CLICKUP_TOKEN   = 'pk_278482746_IHN9XCHPH64MM8ZIKRBNT5H6T3CAF3L9';
+const CLICKUP_LIST_ID = '901327540535';
 
 function ContatoPage() {
   const [tab, setTab] = React.useState('enterprise');
@@ -63,32 +41,55 @@ function ContatoPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(TWENTY_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildLeadPayload(tab, formValues)),
-      });
+      const agora   = Date.now();
+      const em2dias = agora + 2 * 24 * 60 * 60 * 1000;
+      const segmento = tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA';
 
-      if (!res.ok) {
-        let detail = '';
-        let code = '';
-        try {
-          const err = await res.json();
-          code = err.code || '';
-          detail = err.messages?.join(' ') || err.message || '';
-        } catch (_) { /* resposta não-JSON */ }
-        if (code === 'INVALID_WORKFLOW_STATUS' || /has not been activated/i.test(detail)) {
-          throw new Error(
-            'O workflow do CRM ainda não está ativo. No Twenty: Settings → Workflows → abra este workflow → clique em Activate.'
-          );
+      const observacoes = [
+        formValues.volume   ? `Volume: ${formValues.volume}`     : null,
+        formValues.mensagem ? `Mensagem: ${formValues.mensagem}` : null,
+      ].filter(Boolean).join('\n');
+
+      const res = await fetch(
+        `https://api.clickup.com/api/v2/list/${CLICKUP_LIST_ID}/task`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': CLICKUP_TOKEN,
+            'Content-Type':  'application/json',
+          },
+          body: JSON.stringify({
+            name:   `Lead: ${formValues.nome}${formValues.empresa ? ` — ${formValues.empresa}` : ''}`,
+            status: 'identificado',
+            markdown_description: [
+              `**Origem:** Formulário sbk.com.br`,
+              `**Segmento:** ${segmento}`,
+              formValues.volume   ? `**Volume processos/mês:** ${formValues.volume}` : null,
+              formValues.mensagem ? `\n---\n${formValues.mensagem}` : null,
+            ].filter(Boolean).join('\n'),
+            custom_fields: [
+              { id: 'd030717a-682c-403c-b2ff-4c1b9a0e10e7', value: formValues.nome },
+              { id: '91eb8215-78ff-4d15-abb6-8f21aa3ad647', value: formValues.cargo    || '' },
+              { id: '55a4c329-1d39-42a4-b2e8-f215cc3875ec', value: formValues.empresa  || '' },
+              { id: 'e5643134-7774-41bb-8256-55cdb9d4388b', value: formValues.email },
+              { id: '29852aed-f685-4b0d-984a-0bc71d14a5d3', value: '5621b66a-390f-4a25-9c03-9cfb43a3ddea' },
+              { id: 'eda684eb-8ab2-429a-bcaa-8918d17cff81', value: '99b08289-4214-44cc-ad0d-ae58ad960a22' },
+              { id: '1d94e35c-ac7f-422f-ae19-2aca8ea1f6a3', value: segmento },
+              { id: '1de43409-1528-4fe6-8d91-6a414bc97c0b', value: observacoes },
+              { id: '0e475bf6-b53c-42ab-b1c4-6f5292568a29', value: String(agora) },
+              { id: '33c7449f-eaa2-48d9-a178-fac3784e3def', value: 'Aguardando primeiro contato' },
+              { id: 'dd3fa72d-0937-4058-b19a-f0f1bed654f7', value: String(em2dias) },
+            ].filter(f => f.value !== ''),
+          }),
         }
-        throw new Error(detail || `Não foi possível enviar (${res.status}). Tente novamente.`);
-      }
+      );
+
+      if (!res.ok) throw new Error(`Erro ${res.status}. Tente novamente.`);
 
       setSubmitted(true);
       setFormValues(emptyForm);
     } catch (err) {
-      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão e tente novamente.');
+      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão.');
     } finally {
       setSubmitting(false);
     }
