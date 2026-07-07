@@ -23,21 +23,16 @@ function ClickUpForm() {
       src={CLICKUP_FORM_URL}
       title="Formulário de contato SBK"
       width="100%"
-      height="760"
+      height="1180"
       style={{
         background: 'transparent', border: 'none', width: '100%',
-        minHeight: 760, display: 'block', borderRadius: 12,
+        minHeight: 1180, display: 'block', borderRadius: 12,
       }}
     />
   );
 }
 
 function ContatoPage() {
-  const profiles = [
-    { label: 'Enterprise', desc: 'Para grandes empresas buscando serviço dedicado e operação sob medida.', tag: 'Grandes instituições' },
-    { label: 'SBK IA · Mid-market', desc: 'Para empresas que querem autosserviço, velocidade e baixo atrito.', tag: 'Acesso imediato' },
-  ];
-
   return (
     <PageTransition>
       <>
@@ -63,7 +58,7 @@ function ContatoPage() {
                   <span className="h-italic" style={{ color: '#5C9094' }}>a sua operação?</span>
                 </h1>
                 <p style={{ fontSize: 18, fontWeight: 300, color: '#8FA5A1', maxWidth: 420, lineHeight: 1.65, margin: 0 }}>
-                  Times comerciais separados para enterprise e mid-market. Resposta em até 4h úteis.
+                  Times comerciais separados para enterprise e mid-market. Resposta em até 2 dias úteis.
                 </p>
               </Reveal>
               <Reveal direction="right" delay={160} style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -83,7 +78,7 @@ function ContatoPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 22px', background: 'rgba(236,239,243,0.03)', border: '1px solid rgba(236,239,243,0.08)', borderRadius: 14 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#5C9094', flexShrink: 0 }} />
                     <span style={{ fontSize: 13, fontWeight: 300, color: '#8FA5A1' }}>
-                      Resposta garantida em <strong style={{ color: '#ECEFF3', fontWeight: 600 }}>até 4h úteis</strong>
+                      Resposta garantida em <strong style={{ color: '#ECEFF3', fontWeight: 600 }}>até 2 dias úteis</strong>
                     </span>
                   </div>
                 </div>
@@ -93,52 +88,43 @@ function ContatoPage() {
         </section>
 
         {/* ── Formulário ───────────────────────────────────────── */}
-        <section className="sbk-surface-light" style={{ paddingTop: 80, paddingBottom: 128 }}>
-          <div className="sbk-container">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 72, alignItems: 'start' }}>
-              <Reveal direction="up" delay={0}>
-                <div className="rule-caption" style={{ justifyContent: 'flex-start', maxWidth: 240 }}>
-                  <span>Quem atendemos</span>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 32 }}>
-                  {profiles.map(opt => (
-                    <div key={opt.label}
-                      style={{
-                        textAlign: 'left', padding: 20,
-                        background: '#FFFFFF', color: '#012824',
-                        border: '1px solid #DCE0E6', borderRadius: 12,
-                      }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, gap: 12 }}>
-                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 17, fontWeight: 600, letterSpacing: '-0.01em' }}>{opt.label}</div>
-                        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#075056', whiteSpace: 'nowrap' }}>{opt.tag}</span>
-                      </div>
-                      <div style={{ fontSize: 13, fontWeight: 300, color: '#4A545E', lineHeight: 1.5 }}>{opt.desc}</div>
-                    </div>
+        <section className="sbk-surface-light" style={{ paddingTop: 72, paddingBottom: 112 }}>
+          <div className="sbk-container-narrow">
+            <Reveal direction="up" delay={0}>
+              <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 40px' }}>
+                <div className="sbk-eyebrow" style={{ color: '#075056', marginBottom: 14 }}>Fale com a gente</div>
+                <h2 style={{
+                  fontFamily: 'Plus Jakarta Sans', fontSize: 'clamp(26px, 3.2vw, 36px)', fontWeight: 600,
+                  color: '#012824', letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.15,
+                }}>
+                  Conte um pouco sobre a sua operação
+                </h2>
+                <p style={{ fontSize: 16, fontWeight: 300, color: '#4A545E', margin: 0, lineHeight: 1.6 }}>
+                  Preencha o formulário abaixo. Nosso time comercial entra em contato em até 2 dias úteis, sem fila única.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10, marginTop: 26 }}>
+                  {[
+                    'Enterprise · operação dedicada',
+                    'SBK IA · mid-market',
+                    'Resposta em até 2 dias úteis',
+                  ].map((chip, i) => (
+                    <span key={i} style={{
+                      fontSize: 12.5, fontWeight: 500, color: '#075056',
+                      padding: '7px 14px', borderRadius: 999,
+                      background: 'rgba(7,80,86,0.06)', border: '1px solid rgba(7,80,86,0.16)',
+                    }}>{chip}</span>
                   ))}
                 </div>
-                <div style={{ marginTop: 48, padding: 24, background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 12 }}>
-                  <div className="sbk-eyebrow" style={{ color: '#075056', marginBottom: 12 }}>Resposta em até</div>
-                  <CountUp value="1" duration={800} style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 0.95, color: '#012824', fontSize: 48 }} label="dia útil" labelStyle={{ display: 'inline', fontSize: 48, fontWeight: 600, letterSpacing: '-0.04em', color: '#012824' }} />
-                  <p style={{ fontSize: 13, fontWeight: 300, color: '#4A545E', margin: '12px 0 0', lineHeight: 1.55 }}>
-                    Preencha o formulário e nosso time comercial entra em contato. Sem fila única.
-                  </p>
-                </div>
-              </Reveal>
-              <Reveal direction="up" delay={120}>
-                <div style={{ background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 14, padding: 40 }}>
-                  <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 24, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
-                    Fale com a gente
-                  </h2>
-                  <p style={{ fontSize: 14, fontWeight: 300, color: '#4A545E', margin: '0 0 28px' }}>
-                    Conte um pouco sobre a sua operação. Nosso time comercial responde em até 4 horas úteis.
-                  </p>
-                  <ClickUpForm />
-                  <p style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', margin: '20px 0 0', textAlign: 'center' }}>
-                    Ao enviar, você concorda com nossa política de privacidade · LGPD compliance.
-                  </p>
-                </div>
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
+            <Reveal direction="up" delay={120}>
+              <div className="surf-card" style={{ padding: 'clamp(20px, 4vw, 40px)', maxWidth: 820, margin: '0 auto' }}>
+                <ClickUpForm />
+                <p style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', margin: '20px 0 0', textAlign: 'center' }}>
+                  Ao enviar, você concorda com nossa política de privacidade · LGPD compliance.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </section>
       </>
