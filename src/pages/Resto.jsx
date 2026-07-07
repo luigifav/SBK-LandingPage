@@ -1,110 +1,41 @@
 /* global React, Link, Reveal, StaggerReveal, CountUp, PageTransition */
 
-const TWENTY_WEBHOOK_URL =
-  'https://sbk.twenty.com/webhooks/workflows/94b124fa-d591-4467-83e5-6dc34f530545/eef07e54-585d-4af1-9eb0-42bbd3476187';
+const CLICKUP_FORM_URL =
+  'https://forms.clickup.com/90132985812/p/f/2ky5gdym-9833/YGK3VRQCFBSWJ5ZFTE/fromsite';
+const CLICKUP_EMBED_SCRIPT =
+  'https://app-cdn.clickup.com/assets/js/forms-embed/v1.js';
 
-function splitFullName(fullName) {
-  const parts = fullName.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return { firstName: '', lastName: '' };
-  if (parts.length === 1) return { firstName: parts[0], lastName: '' };
-  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
-}
+// Embeds the ClickUp contact form (ClickUp é o CRM da SBK). O script v1.js registra
+// um listener global de postMessage que ajusta a altura do iframe .clickup-dynamic-height,
+// então funciona mesmo quando o iframe é montado depois pelo React.
+function ClickUpForm() {
+  React.useEffect(() => {
+    if (document.querySelector('script[src="' + CLICKUP_EMBED_SCRIPT + '"]')) return;
+    const s = document.createElement('script');
+    s.src = CLICKUP_EMBED_SCRIPT;
+    s.async = true;
+    document.body.appendChild(s);
+  }, []);
 
-function buildLeadPayload(tab, values) {
-  const { firstName, lastName } = splitFullName(values.nome || '');
-  return {
-    firstName,
-    lastName,
-    email: values.email || '',
-    company: values.empresa || '',
-    jobTitle: values.cargo || '',
-    volume: values.volume || '',
-    message: values.mensagem || '',
-    segmento: tab === 'enterprise' ? 'Enterprise' : 'Mid-market · SBK IA',
-    source: 'site-sbk-contato',
-  };
+  return (
+    <iframe
+      className="clickup-embed clickup-dynamic-height"
+      src={CLICKUP_FORM_URL}
+      title="Formulário de contato SBK"
+      width="100%"
+      height="760"
+      style={{
+        background: 'transparent', border: 'none', width: '100%',
+        minHeight: 760, display: 'block', borderRadius: 12,
+      }}
+    />
+  );
 }
 
 function ContatoPage() {
-  const [tab, setTab] = React.useState('enterprise');
-  const [submitted, setSubmitted] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState('');
-  const [formValues, setFormValues] = React.useState({
-    nome: '', cargo: '', empresa: '', email: '', volume: '', mensagem: '',
-  });
-
-  const emptyForm = { nome: '', cargo: '', empresa: '', email: '', volume: '', mensagem: '' };
-
-  const setField = (id, value) => {
-    setFormValues(prev => ({ ...prev, [id]: value }));
-    if (submitError) setSubmitError('');
-  };
-
-  const handleTabChange = (nextTab) => {
-    setTab(nextTab);
-    setSubmitted(false);
-    setSubmitError('');
-    setFormValues(emptyForm);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError('');
-
-    if (!formValues.nome.trim() || !formValues.email.trim()) {
-      setSubmitError('Preencha nome e e-mail para continuar.');
-      return;
-    }
-    if (tab === 'enterprise' && !formValues.empresa.trim()) {
-      setSubmitError('Informe o nome da empresa.');
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      const res = await fetch(TWENTY_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildLeadPayload(tab, formValues)),
-      });
-
-      if (!res.ok) {
-        let detail = '';
-        let code = '';
-        try {
-          const err = await res.json();
-          code = err.code || '';
-          detail = err.messages?.join(' ') || err.message || '';
-        } catch (_) { /* resposta não-JSON */ }
-        if (code === 'INVALID_WORKFLOW_STATUS' || /has not been activated/i.test(detail)) {
-          throw new Error(
-            'O workflow do CRM ainda não está ativo. No Twenty: Settings → Workflows → abra este workflow → clique em Activate.'
-          );
-        }
-        throw new Error(detail || `Não foi possível enviar (${res.status}). Tente novamente.`);
-      }
-
-      setSubmitted(true);
-      setFormValues(emptyForm);
-    } catch (err) {
-      setSubmitError(err.message || 'Erro ao enviar. Verifique sua conexão e tente novamente.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const fields = tab === 'enterprise' ? [
-    { id: 'nome', label: 'Nome completo', type: 'text', placeholder: 'Maria Silva' },
-    { id: 'cargo', label: 'Cargo', type: 'text', placeholder: 'Head de Legal Ops' },
-    { id: 'empresa', label: 'Empresa', type: 'text', placeholder: 'Banco XYZ' },
-    { id: 'email', label: 'E-mail corporativo', type: 'email', placeholder: 'maria@empresa.com.br' },
-    { id: 'volume', label: 'Volume de processos/mês', type: 'select', options: ['Até 1.000', '1.000 a 10.000', '10.000 a 50.000', '50.000+'] },
-    { id: 'mensagem', label: 'Como podemos ajudar?', type: 'textarea', placeholder: 'Conte um pouco sobre a operação atual.' },
-  ] : [
-    { id: 'nome', label: 'Nome', type: 'text', placeholder: 'Maria Silva' },
-    { id: 'email', label: 'E-mail', type: 'email', placeholder: 'maria@empresa.com.br' },
-    { id: 'empresa', label: 'Empresa', type: 'text', placeholder: 'Empresa Ltda' },
+  const profiles = [
+    { label: 'Enterprise', desc: 'Para grandes empresas buscando serviço dedicado e operação sob medida.', tag: 'Grandes instituições' },
+    { label: 'SBK IA · Mid-market', desc: 'Para empresas que querem autosserviço, velocidade e baixo atrito.', tag: 'Acesso imediato' },
   ];
 
   return (
@@ -163,129 +94,48 @@ function ContatoPage() {
 
         {/* ── Formulário ───────────────────────────────────────── */}
         <section className="sbk-surface-light" style={{ paddingTop: 80, paddingBottom: 128 }}>
-          <style>{`
-            .sbk-input:focus { border-color: #075056 !important; box-shadow: 0 0 0 3px rgba(7,80,86,0.10) !important; }
-            .sbk-input::placeholder { color: #A0ACB8; }
-            .sbk-input option { color: #012824; background: #fff; }
-          `}</style>
           <div className="sbk-container">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 72, alignItems: 'start' }}>
               <Reveal direction="up" delay={0}>
                 <div className="rule-caption" style={{ justifyContent: 'flex-start', maxWidth: 240 }}>
-                  <span>Qual é o seu perfil?</span>
+                  <span>Quem atendemos</span>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 32 }}>
-                  {[
-                    { id: 'enterprise', t: 'Enterprise', d: 'Grandes empresas buscando serviço dedicado.' },
-                    { id: 'midmarket', t: 'Mid-market · SBK IA', d: 'Empresa querendo autosserviço e velocidade.' },
-                  ].map(opt => (
-                    <button key={opt.id} onClick={() => handleTabChange(opt.id)}
+                  {profiles.map(opt => (
+                    <div key={opt.label}
                       style={{
                         textAlign: 'left', padding: 20,
-                        background: tab === opt.id ? '#012824' : '#FFFFFF',
-                        color: tab === opt.id ? '#ECEFF3' : '#012824',
-                        border: tab === opt.id ? '1px solid #012824' : '1px solid #DCE0E6',
-                        borderRadius: 12, cursor: 'pointer',
-                        transition: 'all 200ms cubic-bezier(.2,0,0,1)',
+                        background: '#FFFFFF', color: '#012824',
+                        border: '1px solid #DCE0E6', borderRadius: 12,
                       }}>
-                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 17, fontWeight: 600, letterSpacing: '-0.01em', marginBottom: 6 }}>{opt.t}</div>
-                      <div style={{ fontSize: 13, fontWeight: 300, color: tab === opt.id ? '#C8D7D4' : '#4A545E', lineHeight: 1.5 }}>{opt.d}</div>
-                    </button>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, gap: 12 }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 17, fontWeight: 600, letterSpacing: '-0.01em' }}>{opt.label}</div>
+                        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#075056', whiteSpace: 'nowrap' }}>{opt.tag}</span>
+                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 300, color: '#4A545E', lineHeight: 1.5 }}>{opt.desc}</div>
+                    </div>
                   ))}
                 </div>
                 <div style={{ marginTop: 48, padding: 24, background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 12 }}>
                   <div className="sbk-eyebrow" style={{ color: '#075056', marginBottom: 12 }}>Resposta em até</div>
                   <CountUp value="1" duration={800} style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '-0.04em', lineHeight: 0.95, color: '#012824', fontSize: 48 }} label="dia útil" labelStyle={{ display: 'inline', fontSize: 48, fontWeight: 600, letterSpacing: '-0.04em', color: '#012824' }} />
                   <p style={{ fontSize: 13, fontWeight: 300, color: '#4A545E', margin: '12px 0 0', lineHeight: 1.55 }}>
-                    Times comerciais separados para enterprise e mid-market. Sem fila única.
+                    Preencha o formulário e nosso time comercial entra em contato. Sem fila única.
                   </p>
                 </div>
               </Reveal>
               <Reveal direction="up" delay={120}>
-                <div>
-                  {submitted ? (
-                    <div style={{ background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 14, padding: 64, textAlign: 'center' }}>
-                      <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#075056', color: '#ECEFF3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, margin: '0 auto 24px' }}>✓</div>
-                      <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 28, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: '0 0 12px' }}>Mensagem enviada.</h3>
-                      <p style={{ fontSize: 15, fontWeight: 300, color: '#4A545E', lineHeight: 1.55, margin: '0 auto', maxWidth: 420 }}>
-                        Nosso time {tab === 'enterprise' ? 'comercial enterprise' : 'da SBK IA'} entrará em contato em até 4 horas úteis.
-                      </p>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSubmit}
-                      style={{ background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 14, padding: 40 }}>
-                      <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 24, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
-                        {tab === 'enterprise' ? 'Fale com nosso time comercial' : 'Solicite acesso à SBK IA'}
-                      </h2>
-                      <p style={{ fontSize: 14, fontWeight: 300, color: '#4A545E', margin: '0 0 32px' }}>
-                        {tab === 'enterprise' ? 'Para grandes operações. Reunião de 30 minutos sem compromisso.' : 'Acesso aberto, sem fidelização. Você cria a conta hoje mesmo.'}
-                      </p>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-                        {fields.map(f => (
-                          <div key={f.id}>
-                            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#012824', marginBottom: 6, letterSpacing: '0.02em' }}>{f.label}</label>
-                            {f.type === 'textarea' ? (
-                              <textarea
-                                name={f.id}
-                                value={formValues[f.id]}
-                                onChange={(ev) => setField(f.id, ev.target.value)}
-                                placeholder={f.placeholder}
-                                rows={4}
-                                className="sbk-input"
-                                style={inputStyle}
-                              />
-                            ) : f.type === 'select' ? (
-                              <select
-                                name={f.id}
-                                value={formValues[f.id]}
-                                onChange={(ev) => setField(f.id, ev.target.value)}
-                                className="sbk-input"
-                                style={{ ...inputStyle, cursor: 'pointer', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23012824' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center', paddingRight: 40 }}
-                              >
-                                <option value="" disabled>Selecione</option>
-                                {f.options.map(o => <option key={o} value={o}>{o}</option>)}
-                              </select>
-                            ) : (
-                              <input
-                                type={f.type}
-                                name={f.id}
-                                value={formValues[f.id]}
-                                onChange={(ev) => setField(f.id, ev.target.value)}
-                                placeholder={f.placeholder}
-                                className="sbk-input"
-                                style={inputStyle}
-                                required={f.id === 'nome' || f.id === 'email' || (tab === 'enterprise' && f.id === 'empresa')}
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      {submitError ? (
-                        <p role="alert" style={{
-                          fontSize: 13, fontWeight: 500, color: '#B42318',
-                          margin: '20px 0 0', padding: '12px 14px',
-                          background: 'rgba(180,35,24,0.06)', borderRadius: 8,
-                          border: '1px solid rgba(180,35,24,0.18)',
-                        }}>
-                          {submitError}
-                        </p>
-                      ) : null}
-                      <button type="submit"
-                        disabled={submitting}
-                        className={tab === 'enterprise' ? 'btn btn-primary-dark arrow-r' : 'btn btn-ia arrow-r'}
-                        style={{
-                          marginTop: 28, width: '100%', justifyContent: 'center', padding: 16,
-                          opacity: submitting ? 0.7 : 1, cursor: submitting ? 'wait' : 'pointer',
-                        }}>
-                        {submitting
-                          ? 'Enviando…'
-                          : tab === 'enterprise' ? 'Enviar' : 'Criar conta SBK IA'}
-                      </button>
-                      <p style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', margin: '20px 0 0', textAlign: 'center' }}>
-                        Ao enviar, você concorda com nossa política de privacidade · LGPD compliance.
-                      </p>
-                    </form>
-                  )}
+                <div style={{ background: '#FFFFFF', border: '1px solid #DCE0E6', borderRadius: 14, padding: 40 }}>
+                  <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 24, fontWeight: 600, color: '#012824', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
+                    Fale com a gente
+                  </h2>
+                  <p style={{ fontSize: 14, fontWeight: 300, color: '#4A545E', margin: '0 0 28px' }}>
+                    Conte um pouco sobre a sua operação. Nosso time comercial responde em até 4 horas úteis.
+                  </p>
+                  <ClickUpForm />
+                  <p style={{ fontSize: 12, fontWeight: 300, color: '#4A545E', margin: '20px 0 0', textAlign: 'center' }}>
+                    Ao enviar, você concorda com nossa política de privacidade · LGPD compliance.
+                  </p>
                 </div>
               </Reveal>
             </div>
@@ -295,15 +145,6 @@ function ContatoPage() {
     </PageTransition>
   );
 }
-
-const inputStyle = {
-  width: '100%', padding: '12px 14px',
-  fontFamily: 'Plus Jakarta Sans', fontSize: 14, fontWeight: 400,
-  color: '#012824', background: '#F4F6F8', border: '1px solid #DCE0E6',
-  borderRadius: 8, outline: 'none', boxSizing: 'border-box',
-  appearance: 'none', WebkitAppearance: 'none',
-  transition: 'border-color 180ms, box-shadow 180ms',
-};
 
 function ResultadosPage() {
   const cases = [
