@@ -11,7 +11,7 @@ const ECOSYSTEM_MODULES = [
   { id: 'cadastro', label: 'Cadastro', short: 'Cadastro',
     desc: 'Recebe iniciais capturadas (SBK ou terceiros) e publica padronizado no ERP jurídico do cliente.',
     tier: 'sbk' },
-  { id: 'monitoramento', label: 'Monitoramento', short: 'Monitoramento',
+  { id: 'monitoramento', label: 'Movimentações', short: 'Movimentações',
     desc: 'Acompanhamento de movimentações e peças processuais em todos os tribunais do Brasil.',
     tier: 'both' },
   { id: 'subsidios', label: 'Subsídios e Laudos', short: 'Subsídios e Laudos',
