@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <clipPath id="canvas">
+      <rect x="0" y="0" width="512" height="512"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#canvas)">
+    <rect x="0"   y="0" width="512" height="512" rx="256" fill="#1c8577"/>
+    <rect x="108" y="0" width="512" height="512" rx="256" fill="#116157"/>
+    <rect x="216" y="0" width="512" height="512" rx="256" fill="#0a4741"/>
+    <rect x="324" y="0" width="512" height="512" rx="256" fill="#062e2b"/>
+  </g>
+</svg>
