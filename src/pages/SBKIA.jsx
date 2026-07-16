@@ -4,6 +4,7 @@ function SBKIAPage() {
   const products = [
   { name: 'Captura IA', desc: 'Pré-captura de processos por CNPJ. Você cadastra, a IA monitora.', price: '', comingSoon: true },
   { name: 'Monitoramento IA', desc: 'Acompanhe movimentações em todos os tribunais do Brasil. Alertas em tempo real.', price: '', comingSoon: true },
+  { name: 'Cadastro IA', desc: 'Configure os campos que quer receber. Nossa API processa a inicial e devolve exatamente os dados que você definiu.', price: '', comingSoon: true },
   { name: 'Firmas e Poderes IA', desc: 'Validação automática de contratos com base na vigência societária e distribuição de poderes', price: 'a partir de R$ 8,00/consulta' },
   { name: 'OPS', desc: 'Cuida de toda etapa de sua esteira jurídica, é o nosso fluxo completo, captura, laudo e monitoramento.', price: 'a partir de R$ 5,40/processo', href: 'https://lumia.sbk.com.br/login' }];
 
@@ -87,7 +88,7 @@ function SBKIAPage() {
                   }}>
                     <span>catálogo · 2 disponíveis</span>
                     <span style={{ color: 'rgba(92,144,148,0.4)' }}>·</span>
-                    <span style={{ color: '#2A7C79' }}>2 em breve</span>
+                    <span style={{ color: '#2A7C79' }}>3 em breve</span>
                   </div>
                   <StaggerReveal
                     items={products}
