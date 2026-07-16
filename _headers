@@ -1,0 +1,21 @@
+## Security headers para o site SBK
+## Formato lido por Cloudflare Pages e Netlify (arquivo "_headers" na raiz do publish).
+## Para Vercel, Nginx ou Apache, use os equivalentes documentados em SECURITY-HEADERS.md.
+##
+## O CSP substitui o antigo "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:",
+## que na pratica nao protegia contra XSS. Mantemos 'unsafe-eval' (o Babel Standalone
+## transpila JSX no navegador e exige eval) e 'unsafe-inline' (GTM e o bloco App inline),
+## mas restringimos as origens de cada diretiva ao que o site realmente usa.
+##
+## IMPORTANTE: tags adicionadas dentro do Google Tag Manager (Meta Pixel, LinkedIn Insight,
+## Hotjar, etc) carregam de dominios proprios. Se voce adicionar tags novas no GTM,
+## inclua os dominios delas em script-src / connect-src / img-src / frame-src.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://www.googletagmanager.com https://app-cdn.clickup.com https://*.google-analytics.com https://ssl.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://*.clickup.com; frame-src 'self' https://www.googletagmanager.com https://forms.clickup.com https://*.doubleclick.net; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://*.clickup.com; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
