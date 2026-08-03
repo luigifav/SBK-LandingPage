@@ -972,6 +972,17 @@ const TESTIMONIALS = [
     quote: '"O atendimento e a flexibilidade da SBK facilitam demais os desenvolvimentos dos nossos projetos de melhorias e desenvolvimento de novas funcionalidades na plataforma GSI."',
     body: 'A GSI Law contratou a SBK para agregar leitura e interpretação automatizadas de documentos societários à sua plataforma — poupando tempo dos usuários e inserindo IA na rotina de departamentos jurídico-contábeis.'
   },
+  {
+    name: 'Graziella Tannus Zarro',
+    role: 'Sócia · Zarro Advogados',
+    company: 'Zarro Advogados',
+    logo: null,
+    products: [
+      { slug: 'captura', label: 'Captura' },
+    ],
+    quote: '"A parceria com a SBK trouxe ao escritório um ganho real de eficiência na operação jurídica. Com a Captura e o acompanhamento automatizado das movimentações processuais, reduzimos significativamente o tempo dedicado às tarefas operacionais e passamos a direcionar a equipe para aquilo que exige, de fato, análise jurídica."',
+    body: 'O sistema é intuitivo, e a entrega do time da SBK tem sido consistente desde o início da parceria. Além da qualidade da solução, destacamos o atendimento próximo e humano: a equipe é sempre educada, disponível e ágil na resolução de qualquer questão ou ajuste necessário. É esse tipo de resultado que buscávamos ao automatizar nossos processos internos: mais controle, mais previsibilidade e mais tempo para o que realmente importa.'
+  },
 ];
 
 function HomeTestimonial({ exclude = [], eyebrow = 'Relatos de clientes' } = {}) {
@@ -1038,18 +1049,20 @@ function HomeTestimonial({ exclude = [], eyebrow = 'Relatos de clientes' } = {})
                     color: '#012824', letterSpacing: '-0.02em'
                   }}>{t.company}</div>
                 )}
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '5px 12px',
-                  background: 'rgba(7,80,86,0.06)',
-                  border: '1px solid rgba(7,80,86,0.12)',
-                  borderRadius: 999,
-                  marginBottom: 24,
-                  fontSize: 10, fontWeight: 600, letterSpacing: '0.14em',
-                  textTransform: 'uppercase', color: '#075056'
-                }}>
-                  {t.since}
-                </div>
+                {t.since && (
+                  <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '5px 12px',
+                    background: 'rgba(7,80,86,0.06)',
+                    border: '1px solid rgba(7,80,86,0.12)',
+                    borderRadius: 999,
+                    marginBottom: 24,
+                    fontSize: 10, fontWeight: 600, letterSpacing: '0.14em',
+                    textTransform: 'uppercase', color: '#075056'
+                  }}>
+                    {t.since}
+                  </div>
+                )}
                 <div style={{
                   fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: 600,
                   color: '#012824', letterSpacing: '-0.01em', marginBottom: 4
